@@ -216,7 +216,7 @@ function renderLesiones(data) {
             <div class="historico-temp">${h.temporada}</div>
             <div class="historico-num">${h.lesionesCampoTotal}</div>
             <div class="historico-lbl">Lesiones causadas por el terreno</div>
-            ${h.conSmartTurfAI ? '<div class="historico-tag">CON SMART TURF AI</div>' : ''}
+            ${h.conSmartTurfAI ? '<div class="historico-tag">CON SENSOSMART</div>' : ''}
           </div>
         `).join('')}
       </div>

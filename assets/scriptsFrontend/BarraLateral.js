@@ -56,7 +56,7 @@
           </svg>
         </div>
         <div>
-          <div class="logo-name">Smart Turf AI <span class="plan-badge plan-admin">ADMIN</span></div>
+          <div class="logo-name">SensoSmart <span class="plan-badge plan-admin">ADMIN</span></div>
           <div class="logo-club" id="nombre-club">—</div>
         </div>
       </div>
@@ -87,7 +87,7 @@
           </svg>
         </div>
         <div>
-          <div class="logo-name">Smart Turf AI ${planBadge}</div>
+          <div class="logo-name">SensoSmart ${planBadge}</div>
           <div class="logo-club" id="nombre-club">—</div>
         </div>
       </div>

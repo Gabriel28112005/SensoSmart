@@ -7,7 +7,7 @@ const usuarios = [
   { id:1, usuario:'greenkeeper', club:'Real Madrid CF', rol:'greenkeeper', activo:true },
   { id:2, usuario:'director', club:'Real Madrid CF', rol:'director', activo:true },
   { id:3, usuario:'auditor', club:'LaLiga', rol:'auditor', activo:true },
-  { id:4, usuario:'admin', club:'Smart Turf AI', rol:'admin', activo:true },
+  { id:4, usuario:'admin', club:'SensoSmart', rol:'admin', activo:true },
   { id:5, usuario:'barcelona', club:'FC Barcelona', rol:'greenkeeper', activo:true },
   { id:6, usuario:'atletico', club:'Atlético de Madrid', rol:'greenkeeper', activo:true },
 ];

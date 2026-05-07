@@ -1,4 +1,4 @@
-# Smart Turf AI — Documentación Interna de la API
+# SensoSmart — Documentación Interna de la API
 
 > **Documento de uso interno del equipo de desarrollo.**
 > No publicar junto con el código fuente del proyecto.

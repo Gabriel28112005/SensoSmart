@@ -125,7 +125,7 @@ router.post('/asistente', soloElite, (req, res) => {
   } else if (p.includes('hong') || p.includes('plaga') || p.includes('mala hierba')) {
     respuesta = `Estado fitosanitario: detectada poa annua leve en Centro Norte y Área Norte (confianza 87%). También hay riesgo medio de dollar spot en Lateral Izq. para los próximos 3 días — la humedad y temperatura están en el rango óptimo para que aparezca. Te recomiendo aplicar un fungicida preventivo en esa zona y un herbicida selectivo para la poa. El resto del campo está libre de amenazas detectables.`;
   } else if (p.includes('hola') || p.includes('buen') || p.includes('qué tal') || p.includes('que tal')) {
-    respuesta = `¡Hola! Soy tu asistente de Smart Turf AI. Puedo ayudarte con cualquier consulta sobre el estado del campo, recomendaciones de riego, predicciones de lesiones, alertas activas o el próximo partido. ¿En qué te puedo ayudar?`;
+    respuesta = `¡Hola! Soy tu asistente de SensoSmart. Puedo ayudarte con cualquier consulta sobre el estado del campo, recomendaciones de riego, predicciones de lesiones, alertas activas o el próximo partido. ¿En qué te puedo ayudar?`;
   } else if (p.includes('dur') || p.includes('compact')) {
     respuesta = `La dureza media del terreno ahora mismo es 72g (escala FA), dentro del rango reglamentario (<100g). La predicción para el próximo partido es 78g, sigue siendo segura. La zona más dura es Centro Norte (84g previsto) por la humedad baja. Si sigues mi recomendación de riego nocturno, esa zona bajará a unos 70g para el partido.`;
   } else if (p.includes('humedad')) {
@@ -135,7 +135,7 @@ router.post('/asistente', soloElite, (req, res) => {
   } else if (p.includes('bater') || p.includes('sensor')) {
     respuesta = `Tienes 12 sensores activos, todos transmitiendo. La batería media es 87%. El sensor con menos batería es S07 (31%) en Centro Campo — programa un cambio en la próxima visita. Modelo desplegado: Decentlab DL-PR26 con autonomía estimada de 10 años. Calibración suiza certificada vigente.`;
   } else {
-    respuesta = `Entiendo tu pregunta sobre "${pregunta.substring(0, 60)}...". Como asistente de Smart Turf AI tengo acceso a todos los datos del campo en tiempo real. Puedo ayudarte con: estado de zonas concretas, recomendaciones de riego, riesgo de lesiones, alertas activas, predicciones para partidos, fitosanitario, dureza, humedad, temperaturas y estado de los sensores. ¿Quieres que te detalle alguna de estas áreas?`;
+    respuesta = `Entiendo tu pregunta sobre "${pregunta.substring(0, 60)}...". Como asistente de SensoSmart tengo acceso a todos los datos del campo en tiempo real. Puedo ayudarte con: estado de zonas concretas, recomendaciones de riego, riesgo de lesiones, alertas activas, predicciones para partidos, fitosanitario, dureza, humedad, temperaturas y estado de los sensores. ¿Quieres que te detalle alguna de estas áreas?`;
   }
 
   res.json({

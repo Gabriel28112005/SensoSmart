@@ -247,7 +247,7 @@ function descargarInformePDF() {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
   doc.setFont('helvetica', 'bold');
-  doc.text('SMART TURF AI', 14, 16);
+  doc.text('SENSOSMART', 14, 16);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text('INFORME OFICIAL — REGLAMENTO LALIGA', 14, 24);
@@ -376,7 +376,7 @@ function descargarInformePDF() {
   doc.setFontSize(8);
   doc.setTextColor(100, 100, 100);
   doc.setFont('helvetica', 'italic');
-  doc.text('Smart Turf AI · Plataforma de monitorización inteligente del césped deportivo', 14, 290);
+  doc.text('SensoSmart · Plataforma de monitorización inteligente del césped deportivo', 14, 290);
   doc.text('Informe oficial generado automáticamente conforme al Reglamento LaLiga', 14, 294);
 
   // ===== GUARDAR =====

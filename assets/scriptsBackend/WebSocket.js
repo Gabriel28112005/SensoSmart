@@ -11,7 +11,7 @@ function iniciarWebSocket(server) {
     clientes.set(id, { ws, estadio: null, plan: 'smart' });
     console.log(`WebSocket: cliente ${id} conectado`);
 
-    ws.send(JSON.stringify({ tipo: 'conexion', mensaje: 'Smart Turf AI WebSocket activo' }));
+    ws.send(JSON.stringify({ tipo: 'conexion', mensaje: 'SensoSmart WebSocket activo' }));
 
     ws.on('message', (msg) => {
       try {

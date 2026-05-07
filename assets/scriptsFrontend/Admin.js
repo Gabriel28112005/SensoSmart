@@ -1,4 +1,4 @@
-// Admin.js — Panel de administración Smart Turf AI
+// Admin.js — Panel de administración SensoSmart
 async function cargarAdmin() {
   const usuarios = await API.get('/usuarios');
   if (usuarios) renderizarUsuarios(usuarios);

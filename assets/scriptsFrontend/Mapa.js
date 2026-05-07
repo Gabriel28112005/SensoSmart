@@ -333,7 +333,7 @@ async function exportarPDF() {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text('SMART TURF AI', 14, 14);
+  doc.text('SensoSmart', 14, 14);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text('Informe de Historial de Datos', 14, 22);
@@ -352,7 +352,7 @@ async function exportarPDF() {
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'italic');
-  doc.text('Informe generado automáticamente por la plataforma Smart Turf AI', 14, 48);
+  doc.text('Informe generado automáticamente por la plataforma SensoSmart', 14, 48);
 
   let yPos = 58;
 
@@ -518,7 +518,7 @@ async function exportarPDF() {
     doc.setFontSize(8);
     doc.setTextColor(100, 100, 100);
     doc.setFont('helvetica', 'italic');
-    doc.text('Smart Turf AI · Plataforma de monitorización inteligente del césped deportivo', 14, 290);
+    doc.text('SensoSmart · Plataforma de monitorización inteligente del césped deportivo', 14, 290);
     doc.text(`Página ${i} de ${totalPages}`, 196, 290, { align: 'right' });
     doc.setFont('helvetica', 'normal');
     doc.text(`Firma digital: STAI-${Date.now().toString(36).toUpperCase()}`, 14, 294);

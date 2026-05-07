@@ -1,5 +1,5 @@
 -- ============================================================
--- Smart Turf AI — Base de Datos (versión definitiva)
+-- SensoSmart — Base de Datos (versión definitiva)
 -- UAX · SENER 2026 — Grupo 15
 -- Motor: MySQL 8.0+
 -- ============================================================
@@ -16,8 +16,8 @@
 --   · Informes con campos de IA (uniformidad_score, malas_hierbas_detectadas)
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS smart_turf_ai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE smart_turf_ai;
+CREATE DATABASE IF NOT EXISTS SensoSmartDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE SensoSmartDB;
 
 -- ============================================================
 -- USUARIOS — ahora con campo plan (smart/elite)
@@ -262,7 +262,7 @@ VALUES
   ('greenkeeper', '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'greenkeeper', 'elite', 'Real Madrid CF',      'Santiago Bernabéu',     'greenkeeper@realmadrid.com'),
   ('director',    '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'director',    'elite', 'Real Madrid CF',      'Santiago Bernabéu',     'director@realmadrid.com'),
   ('auditor',     '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'auditor',     'elite', 'LaLiga',              'General',               'inspector@laliga.es'),
-  ('admin',       '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'admin',       'elite', 'Smart Turf AI',       'General',               'admin@smartturfai.com'),
+  ('admin',       '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'admin',       'elite', 'SensoSmart',       'General',               'admin@smartturfai.com'),
   ('barcelona',   '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'greenkeeper', 'elite', 'FC Barcelona',        'Spotify Camp Nou',      'greenkeeper@fcbarcelona.cat'),
   ('atletico',    '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'greenkeeper', 'elite', 'Atlético de Madrid',  'Cívitas Metropolitano', 'greenkeeper@atleticodemadrid.com'),
   ('cd_logrones', '$2a$10$WuauocGkCDJnHHWF7WnmoeggCsAgomUmXwwhq22b5SnGh6NJmD/Yy', 'greenkeeper', 'smart', 'CD Logroñés',         'Las Gaunas',            'greenkeeper@cdlogrones.es');

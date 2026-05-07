@@ -1,4 +1,4 @@
-# Smart Turf AI — Usuarios de Demostración
+# SensoSmart — Usuarios de Demostración
 
 > **Archivo interno con credenciales de demo.**
 > No publicar junto con el código fuente. Las contraseñas son provisionales y solo para demostración académica.
