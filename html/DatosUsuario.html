@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Mi perfil</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/DatosUsuario.css"/>
+</head>
+<body>
+  <div class="app-layout">
+
+  <main class="main-content">
+    <div class="topbar">
+      <h2 class="topbar-title">Mi perfil</h2>
+    </div>
+    
+    <div class="perfil-grid">
+      <!-- Datos personales -->
+      <div class="perfil-card">
+        <h3>Datos del usuario</h3>
+        <div class="avatar" id="avatar-iniciales">--</div>
+        <div class="field-group">
+          <label>Usuario</label>
+          <input type="text" id="perfil-usuario" disabled/>
+        </div>
+        <div class="field-group">
+          <label>Club / Estadio</label>
+          <input type="text" id="perfil-club" disabled/>
+        </div>
+        <div class="field-group">
+          <label>Rol</label>
+          <input type="text" id="perfil-rol" disabled/>
+        </div>
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" id="perfil-email" placeholder="email de contacto"/>
+        </div>
+        <button class="btn-primary" onclick="guardarPerfil()">Guardar cambios</button>
+      </div>
+      
+      <!-- Cambio de contraseña -->
+      <div class="perfil-card">
+        <h3>Cambiar contraseña</h3>
+        <div class="field-group">
+          <label>Contraseña actual</label>
+          <div class="input-password-wrap">
+            <input type="password" id="pass-actual" placeholder="contraseña actual"/>
+            <button type="button" class="btn-ojo" onclick="togglePassword('pass-actual', this)" aria-label="Mostrar contraseña">
+              <svg class="ojo-abierto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="ojo-cerrado" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Nueva contraseña</label>
+          <div class="input-password-wrap">
+            <input type="password" id="pass-nueva" placeholder="nueva contraseña"/>
+            <button type="button" class="btn-ojo" onclick="togglePassword('pass-nueva', this)" aria-label="Mostrar contraseña">
+              <svg class="ojo-abierto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="ojo-cerrado" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Confirmar nueva contraseña</label>
+          <div class="input-password-wrap">
+            <input type="password" id="pass-confirmar" placeholder="repetir contraseña"/>
+            <button type="button" class="btn-ojo" onclick="togglePassword('pass-confirmar', this)" aria-label="Mostrar contraseña">
+              <svg class="ojo-abierto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="ojo-cerrado" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Preferencias notificaciones -->
+      <div class="perfil-card">
+        <h3>Preferencias de notificaciones</h3>
+        <div class="pref-row">
+          <label>Email para alertas críticas</label>
+          <input type="checkbox" id="pref-email-crit" checked/>
+        </div>
+        <div class="pref-row">
+          <label>Email para alertas preventivas</label>
+          <input type="checkbox" id="pref-email-prev"/>
+        </div>
+        <div class="pref-row">
+          <label>Notificación push (app)</label>
+          <input type="checkbox" id="pref-push" checked/>
+        </div>
+        <div class="pref-row">
+          <label>SMS para alertas críticas</label>
+          <input type="checkbox" id="pref-sms" checked/>
+        </div>
+        <div class="field-group" style="margin-top:12px">
+          <label>Teléfono SMS</label>
+          <input type="tel" id="perfil-telefono" placeholder="+34 600 000 000"/>
+        </div>
+        <button class="btn-primary" onclick="guardarPreferencias()">Guardar preferencias</button>
+      </div>
+      
+      <!-- Sesiones activas -->
+      <div class="perfil-card">
+        <h3>Sesiones activas</h3>
+        <div id="sesiones-lista"></div>
+        <button class="btn-secondary" style="margin-top:12px" onclick="cerrarTodasSesiones()">Cerrar todas las sesiones</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+<script src="../assets/scriptsFrontend/DatosUsuario.js"></script>
+</body>
+</html>

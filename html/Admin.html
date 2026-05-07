@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Administración</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/Admin.css"/>
+</head>
+<body>
+  <div class="app-layout">
+  
+  <!-- La barra lateral se inyecta automáticamente por BarraLateral.js -->
+  <main class="main-content">
+    <div class="topbar">
+      <h2 class="topbar-title">Panel de administración</h2>
+      <p class="topbar-sub">Gestión de usuarios, roles y configuración del sistema</p>
+    </div>
+
+    <!-- USUARIOS -->
+    <section class="admin-section">
+      <div class="section-header">
+        <h3>Usuarios del sistema</h3>
+        <button class="btn-primary" onclick="abrirModalNuevoUsuario()">+ Nuevo usuario</button>
+      </div>
+      <div class="tabla-wrapper">
+        <table id="tabla-usuarios">
+          <thead>
+            <tr>
+              <th>ID</th><th>Usuario</th><th>Club</th><th>Rol</th><th>Activo</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-usuarios"></tbody>
+        </table>
+      </div>
+    </section>
+    
+    <!-- ESTADÍSTICAS SISTEMA -->
+    <section class="admin-section">
+      <div class="section-header"><h3>Estado del sistema</h3></div>
+      <div class="stats-grid" id="stats-grid"></div>
+    </section>
+
+    <!-- ALERTAS RECIENTES DEL SISTEMA -->
+    <section class="admin-section">
+      <div class="section-header"><h3>Alertas recientes del sistema</h3></div>
+      <div id="alertas-container" class="alertas-container"></div>
+    </section>
+
+    <!-- LOG DE ACCESOS -->
+    <section class="admin-section">
+      <div class="section-header"><h3>Log de accesos recientes</h3></div>
+      <div id="log-accesos" class="log-container"></div>
+    </section>
+  </main>
+</div>
+
+<!-- Modal nuevo usuario -->
+<div id="modal-overlay" class="modal-overlay" style="display:none" onclick="cerrarModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h4>Nuevo usuario</h4>
+      <button onclick="cerrarModal()" class="modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Usuario</label>
+        <input type="text" id="nuevo-usuario" placeholder="nombre de usuario"/>
+      </div>
+      <div class="field-group">
+        <label>Club / Estadio</label>
+        <input type="text" id="nuevo-club" placeholder="nombre del club"/>
+      </div>
+      <div class="field-group">
+        <label>Contraseña</label>
+        <input type="password" id="nuevo-password" placeholder="contraseña"/>
+      </div>
+      <div class="field-group">
+        <label>Rol</label>
+        <select id="nuevo-rol">
+          <option value="greenkeeper">Greenkeeper</option>
+          <option value="director">Dirección</option>
+          <option value="auditor">Auditoría</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="crearUsuario()" style="width:100%;margin-top:8px">Crear usuario</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+<script src="../assets/scriptsFrontend/Admin.js"></script>
+</body>
+</html>

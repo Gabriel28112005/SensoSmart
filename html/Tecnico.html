@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Sensores</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/Tecnico.css"/>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- La barra lateral se inyecta automáticamente por Sidebar.js -->
+
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <h2 class="topbar-title">Sensores — Lecturas en tiempo real</h2>
+        <p class="topbar-sub" id="topbar-sub">Cargando datos...</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-primary" onclick="refrescarDatos()">Actualizar</button>
+        <button class="btn-secondary" onclick="exportarCSV()">Exportar CSV</button>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-bar">
+      <label>Filtrar por estado:
+        <select id="filtro-estado" onchange="aplicarFiltro()">
+          <option value="todos">Todos</option>
+          <option value="ok">OK</option>
+          <option value="alerta">Alerta</option>
+          <option value="critico">Crítico</option>
+        </select>
+      </label>
+      <label>Capa:
+        <select id="filtro-capa" onchange="aplicarFiltro()">
+          <option value="todos">Todas</option>
+          <option value="tierra">En tierra</option>
+          <option value="superficie">Superficie</option>
+          <option value="aire">Aire</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- TABLA SENSORES -->
+    <section class="tabla-section">
+      <div class="section-header"><h3>Tabla de sensores</h3></div>
+      <div class="tabla-wrapper">
+        <table id="tabla-sensores">
+          <thead>
+            <tr>
+              <th>Sensor</th>
+              <th>Zona</th>
+              <th>Capa</th>
+              <th>Humedad (%)</th>
+              <th>Temp. suelo (°C)</th>
+              <th>Salinidad CE (dS/m)</th>
+              <th>Batería</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-sensores"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SENSORES SUPERFICIE Y AIRE -->
+    <section class="sup-aire-section">
+      <div class="section-header"><h3>Superficie y Aire</h3></div>
+      <div class="sup-aire-grid" id="sup-aire-grid"></div>
+    </section>
+
+    <!-- EVAPOTRANSPIRACIÓN -->
+    <section class="et-section">
+      <div class="section-header"><h3>Evapotranspiración estimada (ET)</h3></div>
+      <div class="et-card" id="et-card"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+<script src="../assets/scriptsFrontend/Tecnico.js"></script>
+</body>
+</html>

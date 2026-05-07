@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Dashboard Premium</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/Mapa.css"/>
+  <link rel="stylesheet" href="../assets/css/Elite.css"/>
+</head>
+<body class="elite-body">
+<div class="app-layout">
+
+  <!-- La barra lateral se inyecta automáticamente -->
+
+  <main class="main-content">
+
+    <!-- ===== BANNER IMAGEN ESTADIO ===== -->
+    <div class="elite-stadium-banner" id="elite-stadium-banner">
+      <div class="elite-stadium-overlay">
+        <h2 id="banner-estadio-nombre">Cargando estadio...</h2>
+        <p id="banner-estadio-sub">Plan Elite · Monitorización profesional 24/7</p>
+      </div>
+    </div>
+
+    <!-- ===== TOPBAR ELITE ===== -->
+    <div class="topbar topbar-elite">
+      <div>
+        <h2 class="topbar-title">
+          <span class="elite-crown">⭐</span>
+          <span id="estadio-nombre-elite">Cargando estadio...</span>
+        </h2>
+        <p class="topbar-sub" id="topbar-sub-elite">Plan Elite · SLA 99,9% · Soporte 24/7</p>
+      </div>
+      <div class="topbar-elite-meta">
+        <div class="elite-status-pill">
+          <span class="elite-pulse"></span>
+          <span>Modo profesional activo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KPI ROW ===== -->
+    <section class="kpi-grid" id="kpi-grid-elite"></section>
+
+    <!-- ===== MAPA DEL CAMPO (igual que Smart) ===== -->
+    <section class="field-section">
+      <div class="section-header">
+        <h3>Mapa del campo — sensores Decentlab DL-PR26 en tiempo real</h3>
+        <span class="ws-status" id="ws-status">Conectando...</span>
+      </div>
+      <div class="field-container">
+        <svg id="campo-svg" viewBox="0 0 600 300" width="100%">
+          <rect x="8" y="8" width="584" height="284" rx="4" fill="#2D6A4F"/>
+          <rect x="8" y="8" width="584" height="284" rx="4" fill="none" stroke="#52B788" stroke-width="1.5"/>
+          <line x1="300" y1="8" x2="300" y2="292" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <ellipse cx="300" cy="150" rx="55" ry="40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="8" y="88" width="72" height="124" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+          <rect x="520" y="88" width="72" height="124" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+          <g id="sensores-layer"></g>
+          <!-- Leyenda -->
+          <rect x="10" y="278" width="130" height="16" rx="3" fill="rgba(0,0,0,0.45)"/>
+          <circle cx="20" cy="286" r="3.5" fill="#52B788"/>
+          <text x="27" y="289" font-size="7" fill="#fff">OK</text>
+          <circle cx="55" cy="286" r="3.5" fill="#E76F51"/>
+          <text x="62" y="289" font-size="7" fill="#fff">Alerta</text>
+          <circle cx="100" cy="286" r="3.5" fill="#C1121F"/>
+          <text x="107" y="289" font-size="7" fill="#fff">Crítico</text>
+        </svg>
+      </div>
+      <div id="sensor-detalle" class="sensor-detalle" style="display:none"></div>
+    </section>
+
+    <!-- ===== EXCLUSIVA ELITE 2: ASISTENTE CONVERSACIONAL ===== -->
+    <section class="elite-section" id="asistente">
+      <div class="section-header">
+        <h3>💬 Asistente conversacional Smart Turf AI</h3>
+        <span class="elite-tag">EXCLUSIVA ELITE</span>
+      </div>
+      <div class="elite-chat-wrapper">
+        <div class="elite-chat-messages" id="chat-messages">
+          <div class="chat-msg chat-msg-bot">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              ¡Hola! Soy tu asistente Smart Turf AI. Puedo responderte en lenguaje natural sobre cualquier dato del campo en tiempo real.
+              <br><br>Prueba preguntando: <em>"¿Cómo está el centro del campo?"</em>, <em>"¿Hay riesgo de lesión para el partido?"</em>, <em>"¿Qué zonas debo regar esta noche?"</em>
+            </div>
+          </div>
+        </div>
+        <div class="elite-chat-input-wrap">
+          <input type="text"
+                 id="chat-input"
+                 class="elite-chat-input"
+                 placeholder="Pregúntame algo sobre el campo..."
+                 onkeydown="if(event.key==='Enter')enviarPreguntaAsistente()"/>
+          <button class="elite-chat-send" onclick="enviarPreguntaAsistente()">Enviar</button>
+        </div>
+        <div class="elite-chat-sugerencias">
+          <button class="chat-sug" onclick="usarSugerencia(this)">¿Cómo está el centro del campo?</button>
+          <button class="chat-sug" onclick="usarSugerencia(this)">¿Qué zonas debo regar esta noche?</button>
+          <button class="chat-sug" onclick="usarSugerencia(this)">¿Hay riesgo de lesión?</button>
+          <button class="chat-sug" onclick="usarSugerencia(this)">¿Qué alertas tengo?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXCLUSIVA ELITE 3: RIESGO DE LESIONES ===== -->
+    <section class="elite-section" id="lesiones">
+      <div class="section-header">
+        <h3>🩺 Predicción de riesgo de lesiones</h3>
+        <span class="elite-tag">EXCLUSIVA ELITE</span>
+      </div>
+      <div id="lesiones-content">
+        <div class="ia-loading">Calculando predicción XGBoost...</div>
+      </div>
+    </section>
+
+    <!-- ===== EXCLUSIVA ELITE 4: VISOR 3D DEL ESTADIO ===== -->
+    <section class="elite-section" id="twin">
+      <div class="section-header">
+        <h3>🌐 Visor 3D del estadio</h3>
+        <span class="elite-tag">EXCLUSIVA ELITE</span>
+      </div>
+      <p class="elite-section-desc">
+        Réplica virtual del estadio en tiempo real que combina los datos de los 45 sensores y las cámaras del campo.
+        Permite visualizar el estado de cualquier zona desde cualquier ángulo, simular escenarios
+        (¿qué pasará si llueve mañana?) y revisar partidos completos con todos los datos sincronizados.
+        Cambia con un click entre <strong>vista 3D con sensores</strong> y <strong>vista cromática</strong> (NDVI + térmica).
+      </p>
+      <div class="elite-twin-wrapper">
+        <div class="elite-twin-viewer">
+          <div id="twin-3d" style="width:100%;height:480px;background:#0a1c14;border-radius:8px;position:relative;overflow:hidden">
+            <div id="twin-loading" class="twin-loading">
+              <div class="twin-spinner"></div>
+              <div>Cargando visor 3D del estadio...</div>
+            </div>
+            <!-- Leyenda de la vista cromática (oculta por defecto) -->
+            <div id="twin-leyenda" class="elite-mapa-leyenda twin-leyenda-overlay" style="display:none">
+              <span class="leyenda-item"><span class="leyenda-color" style="background:#1B4332"></span>Crítico</span>
+              <span class="leyenda-item"><span class="leyenda-color" style="background:#E76F51"></span>Atención</span>
+              <span class="leyenda-item"><span class="leyenda-color" style="background:#A8DDB5"></span>Aceptable</span>
+              <span class="leyenda-item"><span class="leyenda-color" style="background:#52B788"></span>Óptimo</span>
+            </div>
+          </div>
+          <div class="elite-twin-controls">
+            <button class="twin-btn twin-mode-btn twin-mode-active" id="btn-modo-3d" onclick="cambiarModoVisor('3d')">🌐 Vista 3D</button>
+            <button class="twin-btn twin-mode-btn" id="btn-modo-cromatico" onclick="cambiarModoVisor('cromatico')">🔥 Vista cromática</button>
+            <span class="twin-controls-divider">|</span>
+            <button class="twin-btn twin-3d-only" onclick="rotarTwin()">🔄 Rotar</button>
+            <button class="twin-btn twin-3d-only" onclick="alternarCapas()">📊 Mostrar/ocultar datos</button>
+            <button class="twin-btn twin-3d-only" onclick="resetTwin()">⌂ Reset vista</button>
+          </div>
+        </div>
+        <div class="elite-twin-info" id="twin-info">
+          <div class="ia-loading">Cargando metadatos del estadio...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ALERTAS Y SECCIONES ESTÁNDAR ===== -->
+    <section class="alerts-section" id="alertas">
+      <div class="section-header">
+        <h3>Alertas activas</h3>
+        <span id="alertas-count" class="badge-count">0 activas</span>
+      </div>
+      <div id="alertas-lista"></div>
+    </section>
+
+    <section class="historico-section" id="historial">
+      <div class="section-header">
+        <h3>Historial de datos</h3>
+        <button class="btn-export" onclick="exportarPDF()">Exportar informe PDF</button>
+      </div>
+      <div class="historico-grid" id="historico-grid"></div>
+    </section>
+
+    <!-- ===== SECCIÓN IA (las 3 IAs disponibles también para Elite) ===== -->
+    <section class="ia-section" id="ia">
+      <div class="section-header">
+        <h3>🤖 Inteligencia Artificial · Las 3 IAs base</h3>
+        <span class="ia-badge">Plan Elite · 7 IAs activas</span>
+      </div>
+
+      <div class="ia-grid">
+        <div class="ia-card ia-card-fito">
+          <div class="ia-card-header">
+            <div class="ia-icon">🌿</div>
+            <h4>Detección fitosanitaria</h4>
+            <span class="ia-status" id="ia-fito-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-fito-body"><div class="ia-loading">Analizando...</div></div>
+        </div>
+
+        <div class="ia-card ia-card-riego">
+          <div class="ia-card-header">
+            <div class="ia-icon">💧</div>
+            <h4>Recomendador de riego</h4>
+            <span class="ia-status" id="ia-riego-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-riego-body"><div class="ia-loading">Calculando...</div></div>
+        </div>
+
+        <div class="ia-card ia-card-informe">
+          <div class="ia-card-header">
+            <div class="ia-icon">📋</div>
+            <h4>Informe oficial automático</h4>
+            <span class="ia-status" id="ia-informe-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-informe-body"><div class="ia-loading">Generando...</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gestion-section" id="gestion">
+      <div class="section-header"><h3>Gestión operativa</h3></div>
+      <div class="gestion-grid" id="gestion-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+<script src="../assets/scriptsFrontend/Notificaciones.js"></script>
+<!-- jsPDF: librería para generar PDFs en el navegador -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="../assets/scriptsFrontend/IA.js"></script>
+<script src="../assets/scriptsFrontend/Mapa.js"></script>
+<script src="../assets/scriptsFrontend/Elite.js"></script>
+</body>
+</html>

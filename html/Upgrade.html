@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Upgrade a Plan Elite</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/Mapa.css"/>
+  <style>
+    .upgrade-page{max-width:1200px;margin:30px auto;padding:0 20px}
+    .upgrade-hero{text-align:center;padding:32px 24px;background:linear-gradient(135deg,#1B4332 0%,#2D6A4F 100%);color:#fff;border-radius:14px;margin-bottom:30px}
+    .upgrade-hero h1{margin:0 0 8px;font-size:30px;font-weight:800}
+    .upgrade-hero h1 .star{color:#FFD700}
+    .upgrade-hero p{margin:0;opacity:.9;font-size:15px}
+    .compare-table{width:100%;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;border-collapse:collapse}
+    .compare-table thead th{padding:18px 16px;text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+    .compare-table thead th:first-child{background:#F8FAF9;color:#666;width:40%}
+    .compare-table thead th.col-smart{background:#E5E7EB;color:#1B4332;width:30%;text-align:center}
+    .compare-table thead th.col-elite{background:linear-gradient(135deg,#FFD700,#B8860B);color:#1B4332;width:30%;text-align:center}
+    .compare-table tbody tr{border-top:1px solid #eee;transition:background .15s}
+    .compare-table tbody tr:hover{background:#FAFCFB}
+    .compare-table tbody td{padding:14px 16px;font-size:14px}
+    .compare-table tbody td:first-child{font-weight:600;color:#333}
+    .compare-table tbody td.center{text-align:center}
+    .yes{color:#52B788;font-size:18px;font-weight:700}
+    .no{color:#C1121F;font-size:18px}
+    .compare-table tfoot td{padding:20px 16px;background:#F8FAF9;font-weight:700;font-size:18px;color:#1B4332}
+    .compare-table tfoot td.col-elite{background:linear-gradient(135deg,#FFF8DC,#FFE5A8);color:#7C5C00}
+    .upgrade-cta{text-align:center;margin:30px 0}
+    .btn-upgrade{display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#FFD700,#B8860B);color:#1B4332;border:none;border-radius:10px;font-size:16px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s}
+    .btn-upgrade:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,215,0,0.4)}
+    .btn-volver{display:inline-block;padding:10px 24px;color:#52B788;background:#fff;border:1px solid #52B788;border-radius:8px;text-decoration:none;font-weight:600;margin-left:12px;transition:all .15s}
+    .btn-volver:hover{background:#52B788;color:#fff}
+    .price-tag{font-size:13px;color:#666;font-weight:400;margin-top:4px}
+  </style>
+</head>
+<body>
+<div class="app-layout">
+
+  <main class="main-content">
+    <div class="upgrade-page">
+
+      <div class="upgrade-hero">
+        <h1><span class="star">⭐</span> Desbloquea todo el potencial con Plan Elite</h1>
+        <p>Compara tu plan actual con el plan Elite y descubre todo lo que puedes obtener</p>
+      </div>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Funcionalidad</th>
+            <th class="col-smart">PLAN SMART<div class="price-tag">Tu plan actual</div></th>
+            <th class="col-elite">PLAN ELITE<div class="price-tag">Recomendado</div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sensores de suelo (humedad, temperatura, salinidad)</td>
+            <td class="center">20 unidades · Milesight EM500-SMC-PH</td>
+            <td class="center">45 unidades · Decentlab DL-PR26 (Suiza)</td>
+          </tr>
+          <tr>
+            <td>Cámara visible PTZ 4K</td>
+            <td class="center">Reolink RLC-823A · 16× zoom</td>
+            <td class="center">Axis Q6225-LE · 50 fps · IK10</td>
+          </tr>
+          <tr>
+            <td>Cámara térmica</td>
+            <td class="center"><span class="no">✗</span></td>
+            <td class="center">FLIR FH-Series ID</td>
+          </tr>
+          <tr>
+            <td>Edge AI (procesamiento local de IA)</td>
+            <td class="center">Raspberry Pi 5 + Hailo-8 · 15 TOPS</td>
+            <td class="center">NVIDIA Jetson Orin NX · 100 TOPS</td>
+          </tr>
+          <tr>
+            <td>Detección fitosanitaria (YOLOv8)</td>
+            <td class="center"><span class="yes">✓</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Recomendador de riego (LSTM)</td>
+            <td class="center"><span class="yes">✓</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Informe oficial LaLiga automático</td>
+            <td class="center"><span class="yes">✓</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Mapa de calor cromático (NDVI + térmico)</td>
+            <td class="center"><span class="no">✗</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Asistente conversacional (LLM Llama 3.2)</td>
+            <td class="center"><span class="no">✗</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Predicción de riesgo de lesiones (XGBoost)</td>
+            <td class="center"><span class="no">✗</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Visor 3D del estadio (Digital Twin)</td>
+            <td class="center"><span class="no">✗</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Dashboard web y app móvil</td>
+            <td class="center"><span class="yes">✓</span></td>
+            <td class="center"><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Soporte técnico</td>
+            <td class="center">Email · 8h-20h</td>
+            <td class="center">24/7 · Priority + KAM dedicado</td>
+          </tr>
+          <tr>
+            <td>SLA de disponibilidad</td>
+            <td class="center">99,5%</td>
+            <td class="center">99,9%</td>
+          </tr>
+          <tr>
+            <td>Visita técnica anual</td>
+            <td class="center">1 incluida</td>
+            <td class="center">4 incluidas + on-demand</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Coste</td>
+            <td class="center">7.500 € + 690 €/mes</td>
+            <td class="center col-elite">45.000 € + 4.000 €/mes</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="upgrade-cta">
+        <a href="mailto:comercial@smartturfai.com?subject=Solicitud%20de%20upgrade%20a%20Plan%20Elite" class="btn-upgrade">
+          ⭐ Solicitar upgrade a Elite
+        </a>
+        <a href="/dashboard" class="btn-volver">← Volver al dashboard</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+</body>
+</html>

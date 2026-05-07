@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SensoSmart — Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/BarraLateral.css"/>
+  <link rel="stylesheet" href="../assets/css/Mapa.css"/>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- La barra lateral se inyecta automáticamente por BarraLateral.js -->
+
+  <main class="main-content">
+
+    <!-- ===== BANNER IMAGEN ESTADIO (Smart) ===== -->
+    <div class="smart-stadium-banner" id="smart-stadium-banner">
+      <div class="smart-stadium-overlay">
+        <h2 id="banner-estadio-nombre-smart">Cargando estadio...</h2>
+        <p id="banner-estadio-sub-smart">Plan Smart · Sensorización profesional</p>
+      </div>
+    </div>
+
+    <div class="topbar">
+      <div>
+        <div class="topbar-estadio-wrapper">
+          <h2 class="topbar-title" id="estadio-nombre">Cargando estadio...</h2>
+          <select id="campo-selector" class="campo-selector" style="display:none" onchange="cambiarCampo(this.value)"></select>
+        </div>
+        <p class="topbar-sub" id="topbar-sub">Último partido: — · Próximo: —</p>
+      </div>
+      <div class="topbar-badges" id="topbar-badges"></div>
+    </div>
+
+    <section class="kpi-grid" id="kpi-grid"></section>
+
+    <section class="field-section">
+      <div class="section-header">
+        <h3>Mapa del campo — sensores en tiempo real</h3>
+        <span class="ws-status" id="ws-status">Conectando...</span>
+      </div>
+      <div class="field-container">
+        <svg id="campo-svg" viewBox="0 0 600 300" width="100%">
+          <rect x="8" y="8" width="584" height="284" rx="4" fill="#2D6A4F"/>
+          <rect x="8" y="8" width="584" height="284" rx="4" fill="none" stroke="#52B788" stroke-width="1.5"/>
+          <line x1="300" y1="8" x2="300" y2="292" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <ellipse cx="300" cy="150" rx="55" ry="40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="8" y="88" width="72" height="124" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+          <rect x="520" y="88" width="72" height="124" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+          <rect x="8" y="110" width="30" height="80" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="562" y="110" width="30" height="80" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <g id="sensores-layer"></g>
+          <!-- Leyenda -->
+          <rect x="10" y="278" width="130" height="16" rx="3" fill="rgba(0,0,0,0.45)"/>
+          <circle cx="20" cy="286" r="3.5" fill="#52B788"/>
+          <text x="27" y="289" font-size="7" fill="#fff">OK</text>
+          <circle cx="55" cy="286" r="3.5" fill="#E76F51"/>
+          <text x="62" y="289" font-size="7" fill="#fff">Alerta</text>
+          <circle cx="100" cy="286" r="3.5" fill="#C1121F"/>
+          <text x="107" y="289" font-size="7" fill="#fff">Crítico</text>
+        </svg>
+      </div>
+      <div id="sensor-detalle" class="sensor-detalle" style="display:none"></div>
+    </section>
+
+    <section class="compliance-section">
+      <div class="section-header"><h3>Cumplimiento normativo LaLiga — pre-partido</h3></div>
+      <div class="compliance-grid" id="compliance-grid"></div>
+    </section>
+
+    <section class="alerts-section" id="alertas">
+      <div class="section-header">
+        <h3>Alertas activas</h3>
+        <span id="alertas-count" class="badge-count">0 activas</span>
+      </div>
+      <div id="alertas-lista"></div>
+    </section>
+
+    <section class="historico-section" id="historial">
+      <div class="section-header">
+        <h3>Historial de datos</h3>
+        <button class="btn-export" onclick="exportarPDF()">Exportar informe PDF</button>
+      </div>
+      <div class="historico-grid" id="historico-grid"></div>
+    </section>
+
+    <!-- ========== SECCIÓN INTELIGENCIA ARTIFICIAL ========== -->
+    <section class="ia-section" id="ia">
+      <div class="section-header">
+        <h3>🤖 Inteligencia Artificial</h3>
+        <span class="ia-badge">3 IAs activas · Plan Smart</span>
+      </div>
+
+      <div class="ia-grid">
+        <!-- IA 1: Detección fitosanitaria -->
+        <div class="ia-card ia-card-fito">
+          <div class="ia-card-header">
+            <div class="ia-icon">🌿</div>
+            <h4>Detección fitosanitaria</h4>
+            <span class="ia-status" id="ia-fito-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-fito-body">
+            <div class="ia-loading">Analizando imágenes...</div>
+          </div>
+        </div>
+
+        <!-- IA 2: Recomendador de riego -->
+        <div class="ia-card ia-card-riego">
+          <div class="ia-card-header">
+            <div class="ia-icon">💧</div>
+            <h4>Recomendador de riego</h4>
+            <span class="ia-status" id="ia-riego-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-riego-body">
+            <div class="ia-loading">Calculando predicciones...</div>
+          </div>
+        </div>
+
+        <!-- IA 3: Informe oficial -->
+        <div class="ia-card ia-card-informe">
+          <div class="ia-card-header">
+            <div class="ia-icon">📋</div>
+            <h4>Informe oficial automático</h4>
+            <span class="ia-status" id="ia-informe-status">Cargando...</span>
+          </div>
+          <div class="ia-card-body" id="ia-informe-body">
+            <div class="ia-loading">Generando informe...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner de upgrade Elite -->
+      <div class="ia-upgrade-banner" id="ia-upgrade-banner" style="display:none">
+        <div class="upgrade-content">
+          <div class="upgrade-icon">⭐</div>
+          <div class="upgrade-text">
+            <strong>Desbloquea más IA con el Plan Elite</strong>
+            <p>Mapa de calor en tiempo real · Asistente conversacional · Predicción de lesiones · Digital Twin 3D</p>
+          </div>
+          <a href="/upgrade" class="upgrade-btn">Ver planes Elite</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="gestion-section" id="gestion">
+      <div class="section-header"><h3>Gestión operativa</h3></div>
+      <div class="gestion-grid" id="gestion-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none" onclick="cerrarModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h4 id="modal-titulo"></h4>
+      <button onclick="cerrarModal()" class="modal-close">×</button>
+    </div>
+    <div id="modal-contenido" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="../assets/scriptsFrontend/Api.js"></script>
+<script src="../assets/scriptsFrontend/RutasProtegidas.js"></script>
+<script src="../assets/scriptsFrontend/BarraLateral.js"></script>
+<script src="../assets/scriptsFrontend/Notificaciones.js"></script>
+<!-- jsPDF: librería para generar PDFs en el navegador -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="../assets/scriptsFrontend/IA.js"></script>
+<script src="../assets/scriptsFrontend/Mapa.js"></script>
+</body>
+</html>

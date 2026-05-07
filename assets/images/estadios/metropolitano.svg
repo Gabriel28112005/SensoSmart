@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1f3f"/>
+      <stop offset="50%" stop-color="#7a1f2a"/>
+      <stop offset="100%" stop-color="#c0303a"/>
+    </linearGradient>
+    <linearGradient id="metalM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f0f0"/>
+      <stop offset="50%" stop-color="#cccccc"/>
+      <stop offset="100%" stop-color="#999999"/>
+    </linearGradient>
+    <linearGradient id="redM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d8404a"/>
+      <stop offset="100%" stop-color="#8a1f2a"/>
+    </linearGradient>
+    <linearGradient id="fieldM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a8045"/>
+      <stop offset="100%" stop-color="#1d5a2c"/>
+    </linearGradient>
+    <radialGradient id="lightM" cx="0.5" cy="0" r="1">
+      <stop offset="0%" stop-color="#fff8c8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#fff8c8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Cielo (atardecer rojo Atleti) -->
+  <rect width="800" height="400" fill="url(#skyM)"/>
+
+  <!-- Estrellas -->
+  <g opacity="0.7">
+    <circle cx="100" cy="40" r="1.5" fill="#fff"/>
+    <circle cx="250" cy="30" r="1" fill="#fff"/>
+    <circle cx="500" cy="25" r="1" fill="#fff"/>
+    <circle cx="700" cy="50" r="1.5" fill="#fff"/>
+  </g>
+
+  <!-- Skyline Madrid Este (zona M-40) -->
+  <g fill="#1a1525" opacity="0.6">
+    <rect x="0" y="240" width="80" height="60"/>
+    <rect x="700" y="220" width="60" height="80"/>
+    <rect x="755" y="240" width="45" height="60"/>
+  </g>
+
+  <!-- Sombra base -->
+  <ellipse cx="400" cy="375" rx="380" ry="20" fill="#000" opacity="0.4"/>
+
+  <!-- Estructura del Metropolitano (cubierta característica oscilante) -->
+  <!-- Base rectangular -->
+  <path d="M 80 365 L 80 300 Q 80 245 220 230 L 580 230 Q 720 245 720 300 L 720 365 Z"
+        fill="url(#metalM)" stroke="#666" stroke-width="2"/>
+
+  <!-- Cubierta superior ondulada (rojiblanca rasgo distintivo) -->
+  <path d="M 60 230 Q 120 200 200 215 Q 280 195 360 210 Q 440 190 520 205 Q 600 195 680 215 Q 720 218 740 225 L 740 250 Q 700 235 660 240 Q 580 220 500 232 Q 420 215 340 230 Q 260 215 180 232 Q 100 218 60 250 Z"
+        fill="#fafafa" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Bandas rojas características de la cubierta -->
+  <g fill="url(#redM)" opacity="0.9">
+    <path d="M 80 222 Q 130 205 180 215 L 180 222 Q 130 215 80 232 Z"/>
+    <path d="M 220 215 Q 280 198 340 212 L 340 220 Q 280 208 220 222 Z"/>
+    <path d="M 380 213 Q 440 195 500 210 L 500 218 Q 440 205 380 220 Z"/>
+    <path d="M 540 210 Q 600 200 660 218 L 660 225 Q 600 212 540 217 Z"/>
+  </g>
+
+  <!-- Sombra debajo de la cubierta -->
+  <path d="M 80 245 Q 200 235 400 232 Q 600 235 720 245 L 720 252 Q 600 245 400 240 Q 200 245 80 252 Z"
+        fill="#1a1a1a" opacity="0.4"/>
+
+  <!-- Líneas verticales (estructura) -->
+  <g stroke="#777" stroke-width="1" opacity="0.6">
+    <line x1="120" y1="248" x2="120" y2="365"/>
+    <line x1="170" y1="248" x2="170" y2="365"/>
+    <line x1="220" y1="248" x2="220" y2="365"/>
+    <line x1="270" y1="248" x2="270" y2="365"/>
+    <line x1="320" y1="248" x2="320" y2="365"/>
+    <line x1="370" y1="248" x2="370" y2="365"/>
+    <line x1="430" y1="248" x2="430" y2="365"/>
+    <line x1="480" y1="248" x2="480" y2="365"/>
+    <line x1="530" y1="248" x2="530" y2="365"/>
+    <line x1="580" y1="248" x2="580" y2="365"/>
+    <line x1="630" y1="248" x2="630" y2="365"/>
+    <line x1="680" y1="248" x2="680" y2="365"/>
+  </g>
+
+  <!-- Anillos -->
+  <g stroke="#888" stroke-width="1" opacity="0.5" fill="none">
+    <ellipse cx="400" cy="280" rx="320" ry="10"/>
+    <ellipse cx="400" cy="320" rx="320" ry="12"/>
+  </g>
+
+  <!-- Logo del Atleti en cubierta -->
+  <g transform="translate(385,205)">
+    <rect x="0" y="0" width="30" height="12" fill="#fff" stroke="#a01525" stroke-width="0.5" rx="1"/>
+    <rect x="0" y="0" width="6" height="12" fill="#a01525"/>
+    <rect x="6" y="0" width="6" height="12" fill="#fff"/>
+    <rect x="12" y="0" width="6" height="12" fill="#a01525"/>
+    <rect x="18" y="0" width="6" height="12" fill="#fff"/>
+    <rect x="24" y="0" width="6" height="12" fill="#0a3a8a"/>
+  </g>
+
+  <!-- Foco de luz -->
+  <ellipse cx="400" cy="220" rx="240" ry="70" fill="url(#lightM)"/>
+
+  <!-- Campo visible -->
+  <ellipse cx="400" cy="232" rx="100" ry="5" fill="url(#fieldM)" opacity="0.9"/>
+  <line x1="400" y1="228" x2="400" y2="237" stroke="#fff" stroke-width="0.5" opacity="0.7"/>
+  <ellipse cx="400" cy="232" rx="6" ry="1.5" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.7"/>
+
+  <!-- Luces perimetrales -->
+  <g fill="#fff5b8" opacity="0.85">
+    <circle cx="120" cy="262" r="1.5"/>
+    <circle cx="170" cy="258" r="1.5"/>
+    <circle cx="220" cy="255" r="1.5"/>
+    <circle cx="270" cy="252" r="1.5"/>
+    <circle cx="320" cy="251" r="1.5"/>
+    <circle cx="370" cy="250" r="1.5"/>
+    <circle cx="430" cy="250" r="1.5"/>
+    <circle cx="480" cy="251" r="1.5"/>
+    <circle cx="530" cy="252" r="1.5"/>
+    <circle cx="580" cy="255" r="1.5"/>
+    <circle cx="630" cy="258" r="1.5"/>
+    <circle cx="680" cy="262" r="1.5"/>
+  </g>
+
+  <!-- Logo Metropolitano texto -->
+  <text x="400" y="350" text-anchor="middle" font-family="Arial Black, sans-serif"
+        font-size="20" fill="#fff" font-weight="900" letter-spacing="3"
+        opacity="0.35">METROPOLITANO</text>
+
+  <!-- Tira LED inferior -->
+  <rect x="80" y="362" width="640" height="3" fill="#FFD700" opacity="0.7"/>
+
+  <!-- Sello Smart Turf AI Elite -->
+  <g transform="translate(660,30)">
+    <circle r="22" fill="#1B4332" stroke="#FFD700" stroke-width="1.5"/>
+    <text y="-2" text-anchor="middle" font-family="Arial" font-size="7" fill="#FFD700" font-weight="700">SMART</text>
+    <text y="6" text-anchor="middle" font-family="Arial" font-size="7" fill="#FFD700" font-weight="700">TURF AI</text>
+    <text y="14" text-anchor="middle" font-family="Arial" font-size="5" fill="#52B788">ELITE</text>
+  </g>
+
+  <!-- Mejoras: marcador electrónico + detalles de campo -->
+  <!-- Marcador electrónico (panel LED) -->
+  <g transform="translate(40,80)">
+    <rect x="0" y="0" width="140" height="48" rx="4" fill="#0a0a0a" stroke="#222" stroke-width="1.5"/>
+    <rect x="2" y="2" width="136" height="14" rx="2" fill="#1a1a1a"/>
+    <text x="70" y="13" text-anchor="middle" font-family="monospace" font-size="9" fill="#FFD700" font-weight="700">J35 · LIVE</text>
+    <text x="20" y="35" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff" font-weight="700">ATM</text>
+    <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="16" fill="#ff3030" font-weight="900">3 - 0</text>
+    <text x="120" y="35" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff" font-weight="700">SEV</text>
+  </g>
+
+  <!-- Campo visible mejorado (líneas blancas más claras) -->
+  <g opacity="0.85">
+    <!-- Borde del campo -->
+    <ellipse cx="400" cy="200" rx="100" ry="6" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <!-- Línea central -->
+    <line x1="400" y1="195" x2="400" y2="206" stroke="#fff" stroke-width="0.6"/>
+    <!-- Círculo central -->
+    <ellipse cx="400" cy="200" rx="10" ry="2" fill="none" stroke="#fff" stroke-width="0.5"/>
+    <!-- Áreas de portería -->
+    <rect x="307" y="197" width="14" height="6" fill="none" stroke="#fff" stroke-width="0.4"/>
+    <rect x="479" y="197" width="14" height="6" fill="none" stroke="#fff" stroke-width="0.4"/>
+  </g>
+</svg>

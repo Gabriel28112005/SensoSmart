@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a8aaa"/>
+      <stop offset="50%" stop-color="#88b8d5"/>
+      <stop offset="100%" stop-color="#c8d8e0"/>
+    </linearGradient>
+    <linearGradient id="hormigonG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0dccc"/>
+      <stop offset="100%" stop-color="#a89c84"/>
+    </linearGradient>
+    <linearGradient id="fieldG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5aa56a"/>
+      <stop offset="100%" stop-color="#3a7548"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Cielo (día despejado, La Rioja) -->
+  <rect width="800" height="400" fill="url(#skyG)"/>
+
+  <!-- Sol -->
+  <circle cx="650" cy="80" r="25" fill="#fff5b8" opacity="0.9"/>
+  <circle cx="650" cy="80" r="35" fill="#fff5b8" opacity="0.4"/>
+
+  <!-- Montañas al fondo (Sierra de Cantabria) -->
+  <path d="M 0 240 L 80 180 L 160 220 L 240 170 L 320 210 L 400 175 L 480 215 L 560 185 L 640 220 L 720 195 L 800 230 L 800 280 L 0 280 Z"
+        fill="#5a7a8a" opacity="0.7"/>
+
+  <!-- Skyline de Logroño (catedral) -->
+  <g fill="#3a4a5a" opacity="0.6">
+    <rect x="60" y="240" width="40" height="40"/>
+    <path d="M 70 240 L 80 220 L 90 240"/>
+    <rect x="700" y="245" width="60" height="35"/>
+  </g>
+
+  <!-- Sombra base -->
+  <ellipse cx="400" cy="375" rx="320" ry="15" fill="#000" opacity="0.3"/>
+
+  <!-- Estructura del estadio (más modesto, gradas tradicionales) -->
+  <!-- Tribuna principal -->
+  <path d="M 130 365 L 130 280 L 200 260 L 600 260 L 670 280 L 670 365 Z"
+        fill="url(#hormigonG)" stroke="#766848" stroke-width="2"/>
+
+  <!-- Cubierta sobre tribuna -->
+  <path d="M 200 260 L 200 250 L 600 250 L 600 260 Z" fill="#5a4a3a"/>
+  <path d="M 200 250 L 240 230 L 560 230 L 600 250 Z" fill="#7a6a4a"/>
+
+  <!-- Líneas verticales (asientos) -->
+  <g stroke="#888" stroke-width="0.8" opacity="0.5">
+    <line x1="160" y1="285" x2="160" y2="365"/>
+    <line x1="220" y1="265" x2="220" y2="365"/>
+    <line x1="280" y1="262" x2="280" y2="365"/>
+    <line x1="340" y1="262" x2="340" y2="365"/>
+    <line x1="400" y1="262" x2="400" y2="365"/>
+    <line x1="460" y1="262" x2="460" y2="365"/>
+    <line x1="520" y1="262" x2="520" y2="365"/>
+    <line x1="580" y1="262" x2="580" y2="365"/>
+    <line x1="640" y1="285" x2="640" y2="365"/>
+  </g>
+
+  <!-- Líneas horizontales de gradas -->
+  <g stroke="#766848" stroke-width="1" opacity="0.4" fill="none">
+    <line x1="130" y1="295" x2="670" y2="295"/>
+    <line x1="130" y1="320" x2="670" y2="320"/>
+    <line x1="130" y1="345" x2="670" y2="345"/>
+  </g>
+
+  <!-- Logo del CD Logroñés (escudo simulado) -->
+  <g transform="translate(390,236)">
+    <rect x="0" y="0" width="20" height="14" fill="#fff" stroke="#c41e3a" stroke-width="0.5" rx="1"/>
+    <rect x="0" y="0" width="20" height="7" fill="#c41e3a"/>
+    <text x="10" y="11" text-anchor="middle" font-family="Arial Black" font-size="5" fill="#1a4a8a" font-weight="900">CDL</text>
+  </g>
+
+  <!-- Postes de iluminación (4 torres tradicionales) -->
+  <g stroke="#444" stroke-width="2" fill="#666">
+    <line x1="100" y1="365" x2="100" y2="180"/>
+    <rect x="92" y="170" width="16" height="14"/>
+    <line x1="700" y1="365" x2="700" y2="180"/>
+    <rect x="692" y="170" width="16" height="14"/>
+    <line x1="270" y1="365" x2="270" y2="220"/>
+    <rect x="262" y="210" width="16" height="14"/>
+    <line x1="530" y1="365" x2="530" y2="220"/>
+    <rect x="522" y="210" width="16" height="14"/>
+  </g>
+
+  <!-- Luces de los postes -->
+  <g fill="#fff5b8">
+    <circle cx="100" cy="177" r="3" opacity="0.8"/>
+    <circle cx="100" cy="177" r="6" opacity="0.4"/>
+    <circle cx="700" cy="177" r="3" opacity="0.8"/>
+    <circle cx="700" cy="177" r="6" opacity="0.4"/>
+    <circle cx="270" cy="217" r="2" opacity="0.7"/>
+    <circle cx="530" cy="217" r="2" opacity="0.7"/>
+  </g>
+
+  <!-- Campo visible -->
+  <ellipse cx="400" cy="265" rx="100" ry="5" fill="url(#fieldG)" opacity="0.9"/>
+  <line x1="400" y1="261" x2="400" y2="270" stroke="#fff" stroke-width="0.5" opacity="0.7"/>
+
+  <!-- Arboleda alrededor (típico ciudad pequeña) -->
+  <g fill="#3a6045" opacity="0.7">
+    <circle cx="40" cy="350" r="20"/>
+    <circle cx="55" cy="345" r="15"/>
+    <circle cx="745" cy="350" r="20"/>
+    <circle cx="760" cy="345" r="15"/>
+  </g>
+
+  <!-- Texto Las Gaunas -->
+  <text x="400" y="385" text-anchor="middle" font-family="Arial Black, sans-serif"
+        font-size="16" fill="#1a3a5a" font-weight="900" letter-spacing="2"
+        opacity="0.5">LAS GAUNAS</text>
+
+  <!-- Sello Smart Turf AI SMART -->
+  <g transform="translate(660,30)">
+    <circle r="22" fill="#1B4332" stroke="#52B788" stroke-width="1.5"/>
+    <text y="-2" text-anchor="middle" font-family="Arial" font-size="7" fill="#52B788" font-weight="700">SMART</text>
+    <text y="6" text-anchor="middle" font-family="Arial" font-size="7" fill="#52B788" font-weight="700">TURF AI</text>
+    <text y="14" text-anchor="middle" font-family="Arial" font-size="5" fill="#fff">SMART</text>
+  </g>
+
+  <!-- Mejoras: marcador electrónico + detalles de campo -->
+  <!-- Marcador electrónico (panel LED) -->
+  <g transform="translate(40,80)">
+    <rect x="0" y="0" width="140" height="48" rx="4" fill="#0a0a0a" stroke="#222" stroke-width="1.5"/>
+    <rect x="2" y="2" width="136" height="14" rx="2" fill="#1a1a1a"/>
+    <text x="70" y="13" text-anchor="middle" font-family="monospace" font-size="9" fill="#FFD700" font-weight="700">J28 · LIVE</text>
+    <text x="20" y="35" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff" font-weight="700">CDL</text>
+    <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="16" fill="#ff3030" font-weight="900">0 - 0</text>
+    <text x="120" y="35" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff" font-weight="700">CAS</text>
+  </g>
+
+  <!-- Campo visible mejorado (líneas blancas más claras) -->
+  <g opacity="0.85">
+    <!-- Borde del campo -->
+    <ellipse cx="400" cy="200" rx="100" ry="6" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <!-- Línea central -->
+    <line x1="400" y1="195" x2="400" y2="206" stroke="#fff" stroke-width="0.6"/>
+    <!-- Círculo central -->
+    <ellipse cx="400" cy="200" rx="10" ry="2" fill="none" stroke="#fff" stroke-width="0.5"/>
+    <!-- Áreas de portería -->
+    <rect x="307" y="197" width="14" height="6" fill="none" stroke="#fff" stroke-width="0.4"/>
+    <rect x="479" y="197" width="14" height="6" fill="none" stroke="#fff" stroke-width="0.4"/>
+  </g>
+</svg>
