@@ -13,6 +13,18 @@ const jwt = require('jsonwebtoken');
 // MIDDLEWARE DE CONTROL DE PLAN
 // Bloquea endpoints Elite si el usuario es Smart
 // ============================================================
+function verificarToken(req, res, next) {
+  const auth = req.headers['authorization'];
+  if (!auth) return res.status(401).json({ error: 'No autenticado' });
+  try {
+    const token = auth.startsWith('Bearer ') ? auth.slice(7) : auth;
+    req.usuario = jwt.verify(token, process.env.JWT_SECRET);
+    next();
+  } catch {
+    return res.status(401).json({ error: 'Token inválido o expirado' });
+  }
+}
+
 function soloElite(req, res, next) {
   const auth = req.headers['authorization'];
   if (!auth) return res.status(401).json({ error: 'No autenticado' });
@@ -32,6 +44,80 @@ function soloElite(req, res, next) {
     next();
   } catch {
     return res.status(401).json({ error: 'Token inválido' });
+  }
+}
+
+// ============================================================
+// FUNCIÓN AUXILIAR — obtener próximo partido desde football-data.org
+// API gratuita con acceso a la temporada actual (2025/26)
+// Usada tanto en /lesiones como en /proximo-partido
+// ============================================================
+async function obtenerProximoPartido(club) {
+  // IDs de football-data.org — LaLiga EA Sports 2025/26
+  const EQUIPOS = {
+    'Real Madrid CF':        86,
+    'FC Barcelona':          81,
+    'Atlético de Madrid':    78,
+    'Athletic Bilbao':       77,
+    'Villarreal CF':         94,
+    'Real Betis':            90,
+    'Celta de Vigo':         558,
+    'Getafe CF':             82,
+    'Real Sociedad':         92,
+    'Osasuna':               79,
+    'Rayo Vallecano':        876,
+    'Valencia CF':           95,
+    'Espanyol':              80,
+    'Girona FC':             298,
+    'Sevilla FC':            559,
+    'Deportivo Alavés':      263,
+    'RCD Mallorca':          89,
+    'Levante UD':            97,
+    'Elche CF':              745,
+    'Real Oviedo':           285,
+  };
+
+  const equipoId = EQUIPOS[club];
+  if (!equipoId) return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
+
+  try {
+    const response = await fetch(
+      `https://api.football-data.org/v4/teams/${equipoId}/matches?status=SCHEDULED&limit=1`,
+      {
+        headers: {
+          'X-Auth-Token': process.env.FOOTBALLDATA_KEY,
+          'User-Agent':   'SensoSmart/1.0'
+        }
+      }
+    );
+    const data = await response.json();
+    console.log('=== football-data.org respuesta ===');
+    console.log('Status HTTP:', response.status);
+    console.log('Data:', JSON.stringify(data, null, 2));
+    const match = data.matches?.[0];
+
+    if (!match) return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
+
+    const fecha = new Date(match.utcDate);
+    const ahora = new Date();
+    const fechaSoloFecha = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+const ahoraSoloFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+const diffDias = Math.round((fechaSoloFecha - ahoraSoloFecha) / (1000 * 60 * 60 * 24));
+    const jornada = match.matchday ? `J${match.matchday}` : '—';
+
+    const esLocal = match.homeTeam.id === equipoId;
+    const rival = esLocal ? match.awayTeam.name : match.homeTeam.name;
+
+    return {
+      jornada,
+      fecha:         fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+      diasRestantes: diffDias > 0 ? diffDias : 0,
+      rival,
+      esLocal
+    };
+  } catch (e) {
+    console.error('Error obteniendo próximo partido:', e.message);
+    return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
   }
 }
 
@@ -87,13 +173,13 @@ router.get('/mapa-calor', soloElite, (req, res) => {
       ndviMin: +ndviMin.toFixed(3),
       ndviMax: +ndviMax.toFixed(3),
       uniformidad,
-      zonasOptimas: rejilla.flat().filter(c => c.estado === 'optimo').length,
+      zonasOptimas:  rejilla.flat().filter(c => c.estado === 'optimo').length,
       zonasAtencion: rejilla.flat().filter(c => c.estado === 'atencion').length,
       zonasCriticas: rejilla.flat().filter(c => c.estado === 'critico').length,
     },
-    fuente: 'Axis Q6225-LE + FLIR FH-Series ID',
-    procesado: 'NVIDIA Jetson Orin NX (100 TOPS)',
-    latencia: '320 ms',
+    fuente:      'Axis Q6225-LE + FLIR FH-Series ID',
+    procesado:   'NVIDIA Jetson Orin NX (100 TOPS)',
+    latencia:    '320 ms',
     actualizado: 'hace 2 segundos'
   });
 });
@@ -140,28 +226,32 @@ router.post('/asistente', soloElite, (req, res) => {
 
   res.json({
     respuesta,
-    modelo: 'Llama 3.2 3B (local Jetson) + RAG',
-    latencia: Math.floor(Math.random() * 200 + 100) + ' ms',
+    modelo:    'Llama 3.2 3B (local Jetson) + RAG',
+    latencia:  Math.floor(Math.random() * 200 + 100) + ' ms',
     timestamp: new Date().toISOString()
   });
 });
 
 // ============================================================
 // 3. PREDICCIÓN DE RIESGO DE LESIONES
+// Consulta el próximo partido en tiempo real desde football-data.org
 // ============================================================
-router.get('/lesiones', soloElite, (req, res) => {
+router.get('/lesiones', soloElite, async (req, res) => {
+  // Obtener próximo partido real desde football-data.org
+  const proximoPartido = await obtenerProximoPartido(req.usuario.club);
+
   res.json({
-    proximoPartido: { jornada: 'J35', fecha: '3 mayo 2026', diasRestantes: 2 },
+    proximoPartido,
     resumenGlobal: { riesgoMedio: 'medio', probGlobal: 0.18 },
     porZona: [
-      { zona: 'Portería Norte', riesgo: 'bajo',      prob: 0.08, dureza: 70, humedad: 26, uniformidad: 92 },
-      { zona: 'Lateral Izq.',   riesgo: 'medio',     prob: 0.16, dureza: 76, humedad: 29, uniformidad: 88 },
-      { zona: 'Centro Norte',   riesgo: 'alto',      prob: 0.34, dureza: 84, humedad: 18, uniformidad: 73, alerta: 'Combina dureza alta + humedad muy baja' },
-      { zona: 'Lateral Der.',   riesgo: 'bajo',      prob: 0.09, dureza: 71, humedad: 31, uniformidad: 91 },
-      { zona: 'Portería Sur',   riesgo: 'bajo',      prob: 0.10, dureza: 72, humedad: 27, uniformidad: 90 },
-      { zona: 'Centro Campo',   riesgo: 'bajo',      prob: 0.11, dureza: 73, humedad: 28, uniformidad: 91 },
-      { zona: 'Área Norte',     riesgo: 'medio',     prob: 0.19, dureza: 68, humedad: 38, uniformidad: 84, alerta: 'Salinidad alta puede provocar resbalones' },
-      { zona: 'Centro Sur',     riesgo: 'bajo',      prob: 0.12, dureza: 74, humedad: 29, uniformidad: 89 }
+      { zona: 'Portería Norte', riesgo: 'bajo',  prob: 0.08, dureza: 70, humedad: 26, uniformidad: 92 },
+      { zona: 'Lateral Izq.',   riesgo: 'medio', prob: 0.16, dureza: 76, humedad: 29, uniformidad: 88 },
+      { zona: 'Centro Norte',   riesgo: 'alto',  prob: 0.34, dureza: 84, humedad: 18, uniformidad: 73, alerta: 'Combina dureza alta + humedad muy baja' },
+      { zona: 'Lateral Der.',   riesgo: 'bajo',  prob: 0.09, dureza: 71, humedad: 31, uniformidad: 91 },
+      { zona: 'Portería Sur',   riesgo: 'bajo',  prob: 0.10, dureza: 72, humedad: 27, uniformidad: 90 },
+      { zona: 'Centro Campo',   riesgo: 'bajo',  prob: 0.11, dureza: 73, humedad: 28, uniformidad: 91 },
+      { zona: 'Área Norte',     riesgo: 'medio', prob: 0.19, dureza: 68, humedad: 38, uniformidad: 84, alerta: 'Salinidad alta puede provocar resbalones' },
+      { zona: 'Centro Sur',     riesgo: 'bajo',  prob: 0.12, dureza: 74, humedad: 29, uniformidad: 89 }
     ],
     historico: [
       { temporada: '2024/25', lesionesCampoTotal: 7, lesionesEvitables: 4 },
@@ -174,8 +264,8 @@ router.get('/lesiones', soloElite, (req, res) => {
       'Compartir este informe con el cuerpo técnico para ajustar entrenamientos a zonas más seguras'
     ],
     valorPlantillaProtegido: '€ 62.000.000 (jugadores expuestos a zonas de riesgo medio/alto)',
-    modelo: 'XGBoost + correlación histórica de lesiones',
-    confianza: 0.83
+    modelo:     'XGBoost + correlación histórica de lesiones',
+    confianza:  0.83
   });
 });
 
@@ -184,31 +274,44 @@ router.get('/lesiones', soloElite, (req, res) => {
 // ============================================================
 router.get('/digital-twin', soloElite, (req, res) => {
   res.json({
-    estadio: 'Santiago Bernabéu',
-    capacidad: 81044,
-    coordenadasGPS: { lat: 40.4530, lon: -3.6883 },
-    orientacion: 'NNE-SSO (357°)',
+    estadio:          'Santiago Bernabéu',
+    capacidad:        81044,
+    coordenadasGPS:   { lat: 40.4530, lon: -3.6883 },
+    orientacion:      'NNE-SSO (357°)',
     dimensionesCampo: { largo: 105, ancho: 68, area: 7140 },
     capas: {
-      cesped: { tipo: 'Híbrido (Ryegrass 80% + Bermuda 20%)', altura: 24, color: '#2D6A4F' },
+      cesped:   { tipo: 'Híbrido (Ryegrass 80% + Bermuda 20%)', altura: 24, color: '#2D6A4F' },
       sustrato: { tipo: 'Arena silícea + materia orgánica', profundidad: 25 },
-      drenaje: { tipo: 'Tubular + capa drenante', profundidad: 50 },
-      base: { tipo: 'Geotextil + grava', profundidad: 80 }
+      drenaje:  { tipo: 'Tubular + capa drenante', profundidad: 50 },
+      base:     { tipo: 'Geotextil + grava', profundidad: 80 }
     },
     sensoresPosicion: [
-      { id: 'S01', x: -42, y: 0, z: 25, valor: 'humedad', dato: 26 },
+      { id: 'S01', x: -42, y: 0,   z: 25, valor: 'humedad', dato: 26 },
       { id: 'S02', x: -25, y: -10, z: 25, valor: 'humedad', dato: 29 },
-      { id: 'S03', x: 0, y: -15, z: 25, valor: 'humedad', dato: 18 },
-      { id: 'S04', x: 25, y: -10, z: 25, valor: 'humedad', dato: 31 },
-      { id: 'S05', x: 42, y: 0, z: 25, valor: 'humedad', dato: 27 },
-      { id: 'S07', x: 0, y: 0, z: 25, valor: 'humedad', dato: 28 },
-      { id: 'S09', x: -42, y: 22, z: 25, valor: 'humedad', dato: 38 }
+      { id: 'S03', x: 0,   y: -15, z: 25, valor: 'humedad', dato: 18 },
+      { id: 'S04', x: 25,  y: -10, z: 25, valor: 'humedad', dato: 31 },
+      { id: 'S05', x: 42,  y: 0,   z: 25, valor: 'humedad', dato: 27 },
+      { id: 'S07', x: 0,   y: 0,   z: 25, valor: 'humedad', dato: 28 },
+      { id: 'S09', x: -42, y: 22,  z: 25, valor: 'humedad', dato: 38 }
     ],
-    iluminacion: { potenciaLED: '350 lux', cobertura: '100%', uniformidad: 0.86 },
-    riego: { aspersores: 28, sectores: 12, automatizado: true },
-    integracionLuces: 'SGL Concept (8 unidades)',
+    iluminacion:        { potenciaLED: '350 lux', cobertura: '100%', uniformidad: 0.86 },
+    riego:              { aspersores: 28, sectores: 12, automatizado: true },
+    integracionLuces:   'SGL Concept (8 unidades)',
     sistemasIntegrados: ['Riego automático', 'Luces de crecimiento SGL', 'Cámara TV', 'Sistema GPS jugadores']
   });
+});
+
+// ============================================================
+// 5. PRÓXIMO PARTIDO — datos en tiempo real desde football-data.org
+// ============================================================
+router.get('/proximo-partido', verificarToken, soloElite, async (req, res) => {
+  try {
+    const partido = await obtenerProximoPartido(req.usuario.club);
+    res.json(partido);
+  } catch (error) {
+    console.error('Error al obtener próximo partido:', error.message);
+    res.status(500).json({ error: 'Error al obtener el próximo partido' });
+  }
 });
 
 module.exports = router;

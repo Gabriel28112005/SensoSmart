@@ -10,6 +10,9 @@
   // Cargar la imagen del estadio según el usuario
   cargarImagenEstadio();
 
+  // Se usa la API de "football-data.org" (gratuita, temporada actual incluida)
+  await cargarProximoPartido();
+
   // Cargar todos los datos Elite en paralelo
   const [mapaCalor, lesiones, twin] = await Promise.all([
     API.get('/elite/mapa-calor'),
@@ -140,6 +143,13 @@ function escapeHtml(s) {
 }
 
 // ============================================================
+// HELPER — singular o plural de días
+// ============================================================
+function textoDias(dias) {
+  return dias === 1 ? '1 día' : `${dias} días`;
+}
+
+// ============================================================
 // 3. RIESGO DE LESIONES
 // ============================================================
 function renderLesiones(data) {
@@ -184,7 +194,7 @@ function renderLesiones(data) {
       <div class="lesion-resumen-block">
         <div class="lesion-resumen-titulo">PRÓXIMO PARTIDO</div>
         <div class="lesion-resumen-val">${data.proximoPartido.jornada}</div>
-        <div class="lesion-resumen-sub">${data.proximoPartido.fecha} (en ${data.proximoPartido.diasRestantes} días)</div>
+        <div class="lesion-resumen-sub">${data.proximoPartido.fecha} (en ${textoDias(data.proximoPartido.diasRestantes)})</div>
       </div>
       <div class="lesion-resumen-block">
         <div class="lesion-resumen-titulo">RIESGO GLOBAL</div>
@@ -566,4 +576,23 @@ function cambiarModoVisor(modo) {
     twinHeatCells.forEach(c => { c.visible = false; });
     if (twinField) twinField.material.color.setHex(0x2D6A4F); // verde césped
   }
+}
+
+// ============================================================
+// PRÓXIMO PARTIDO — carga y muestra jornada, fecha y rival
+// Corregido: usa diasRestantes (no diffDias) y singular/plural
+// ============================================================
+async function cargarProximoPartido() {
+  const data = await API.get('/elite/proximo-partido');
+  if (!data || data.error) return;
+
+  const elJornada = document.getElementById('proximo-jornada');
+  const elFecha   = document.getElementById('proximo-fecha');
+  const elRival   = document.getElementById('proximo-rival');
+
+  if (elJornada) elJornada.textContent = data.jornada || '—';
+  if (elFecha)   elFecha.textContent   = data.fecha
+                   ? `${data.fecha} (en ${textoDias(data.diasRestantes)})`
+                   : '—';
+  if (elRival)   elRival.textContent   = data.rival   || '—';
 }

@@ -1,13 +1,12 @@
 (function () {
   const paginaActual = window.location.pathname;
 
-  const esPerfil = paginaActual === '/perfil';
-  const esSensores = paginaActual === '/tecnico';
+  const esPerfil    = paginaActual === '/perfil';
+  const esSensores  = paginaActual === '/tecnico';
   const esDashboard = paginaActual === '/dashboard' || paginaActual === '/dashboard-elite';
-  const esAdmin = paginaActual === '/admin';
+  const esAdmin     = paginaActual === '/admin';
   const dashboardAbierto = esDashboard;
 
-  // Obtener plan del usuario actual (smart o elite)
   let plan = 'smart';
   try {
     const u = JSON.parse(localStorage.getItem('sai_user') || '{}');
@@ -19,31 +18,21 @@
     ? '<span class="plan-badge plan-elite">ELITE</span>'
     : '<span class="plan-badge plan-smart">SMART</span>';
 
-  // Sección IA — disponible en ambos planes
-  const navIA = `
-    <a href="${dashboardHref}#ia" class="nav-link">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 1l1.5 4.5L14 7l-3.5 2L8 13.5 5.5 9 2 7l4.5-1.5z"/>
-      </svg>
-      Inteligencia Artificial
-    </a>
-  `;
-
   // Sección Elite — solo si el plan es elite
   const navElite = plan === 'elite' ? `
-    <div class="nav-elite-section">
-      <div class="nav-elite-title">EXCLUSIVAS ELITE</div>
-      <a href="/dashboard-elite#asistente" class="nav-link nav-elite-link">
-        <span class="elite-dot"></span>Asistente IA
-      </a>
-      <a href="/dashboard-elite#lesiones" class="nav-link nav-elite-link">
-        <span class="elite-dot"></span>Riesgo lesiones
-      </a>
-      <a href="/dashboard-elite#twin" class="nav-link nav-elite-link">
-        <span class="elite-dot"></span>Visor 3D / Cromático
-      </a>
-    </div>
-  ` : '';
+  <div class="nav-elite-section">
+    <div class="nav-elite-title">EXCLUSIVAS ELITE</div>
+    <a href="/dashboard-elite#asistente" class="nav-link nav-elite-link" onclick="irSeccion('asistente')">
+      <span class="elite-dot"></span>Asistente IA
+    </a>
+    <a href="/dashboard-elite#lesiones" class="nav-link nav-elite-link" onclick="irSeccion('lesiones')">
+      <span class="elite-dot"></span>Riesgo lesiones
+    </a>
+    <a href="/dashboard-elite#twin" class="nav-link nav-elite-link" onclick="irSeccion('twin')">
+      <span class="elite-dot"></span>Visor 3D / Cromático
+    </a>
+  </div>
+` : '';
 
   const html = esAdmin ? `
     <aside class="sidebar">
@@ -133,13 +122,14 @@
             <a href="${dashboardHref}#historial" class="nav-sub-link" onclick="irSeccion('historial')">
               <span class="nav-sub-dot"></span>Historial
             </a>
+            <a href="${dashboardHref}#ia" class="nav-sub-link" onclick="irSeccion('ia')">
+              <span class="nav-sub-dot"></span>Inteligencia Artificial
+            </a>
             <a href="${dashboardHref}#gestion" class="nav-sub-link" onclick="irSeccion('gestion')">
               <span class="nav-sub-dot"></span>Gestión
             </a>
           </div>
         </div>
-
-        ${navIA}
 
         ${navElite}
 
@@ -193,8 +183,8 @@
   function configurarRol() {
     const user = API.getUsuario();
     if (!user) return;
-    const elClub   = document.getElementById('nombre-club');
-    const elRol    = document.getElementById('rol-usuario');
+    const elClub    = document.getElementById('nombre-club');
+    const elRol     = document.getElementById('rol-usuario');
     const linkAdmin = document.getElementById('link-admin');
     if (elClub)    elClub.textContent = user.club || '—';
     if (elRol)     elRol.textContent  = user.rol
