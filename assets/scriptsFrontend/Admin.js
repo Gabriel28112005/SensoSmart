@@ -3,7 +3,7 @@ async function cargarAdmin() {
   const usuarios = await API.get('/usuarios');
   if (usuarios) renderizarUsuarios(usuarios);
   renderizarStats();
-  renderizarLog();
+  await renderizarLog();
   renderizarAlertasRecientes();
 }
 
@@ -55,17 +55,25 @@ function renderizarStats() {
   }).join('');
 }
 
-function renderizarLog() {
+async function renderizarLog() {
   const log = document.getElementById('log-accesos');
   if (!log) return;
-  const entradas = [
-    'Hoy 10:52 — greenkeeper inició sesión desde Chrome/Windows',
-    'Hoy 10:15 — director inició sesión desde Safari/iPad',
-    'Hoy 09:12 — Sistema generó alerta crítica (S09)',
-    'Ayer 18:30 — Sistema generó alerta informativa (viento)',
-    'Ayer 08:00 — Job: informe diario pre-partido generado',
-  ];
-  log.innerHTML = entradas.map(e => `<div class="log-entry">${e}</div>`).join('');
+
+  log.innerHTML = '<div class="log-entry" style="color:#6B7280">Cargando accesos recientes...</div>';
+
+  const datos = await API.get('/sesiones/log');
+
+  if (!datos || datos.error) {
+    log.innerHTML = '<div class="log-entry" style="color:#C1121F">Error al cargar el log de accesos.</div>';
+    return;
+  }
+
+  if (datos.length === 0) {
+    log.innerHTML = '<div class="log-entry" style="color:#6B7280">No hay accesos registrados todavía.</div>';
+    return;
+  }
+
+  log.innerHTML = datos.map(e => `<div class="log-entry">${e}</div>`).join('');
 }
 
 function renderizarAlertasRecientes() {

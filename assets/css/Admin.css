@@ -185,3 +185,10 @@ tr:hover{background:#F0F9F4}
   transition:border-color .15s,box-shadow .15s;
 }
 .field-group input:focus,.field-group select:focus{outline:none;border-color:var(--g3);box-shadow:0 0 0 3px rgba(82,183,136,0.15)}
+
+
+/* Oculta el botón nativo de Microsoft Edge para mostrar/ocultar contraseña,
+   evitando que aparezca duplicado junto al botón propio de la aplicación */
+input[type="password"]::-ms-reveal {
+    display: none;
+}

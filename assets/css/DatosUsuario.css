@@ -57,3 +57,10 @@ body{font-family:var(--font);background:#F3F4F6;color:#111;min-height:100vh}
   color: #1B4332;
 }
 @media(max-width:700px){.perfil-grid{grid-template-columns:1fr}}
+
+
+/* Oculta el botón nativo de Microsoft Edge para mostrar/ocultar contraseña,
+   evitando que aparezca duplicado junto al botón propio de la aplicación */
+input[type="password"]::-ms-reveal {
+    display: none;
+}

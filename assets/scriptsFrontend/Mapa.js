@@ -14,7 +14,6 @@ async function cargarDashboard() {
     const el = document.getElementById('estadio-nombre');
     if (el) el.textContent = user.estadio || user.club || 'Dashboard';
 
-    // Banner del estadio (solo en Smart, el Elite tiene su propio banner)
     const banner = document.getElementById('smart-stadium-banner');
     const bannerNombre = document.getElementById('banner-estadio-nombre-smart');
     if (banner) {
@@ -22,9 +21,6 @@ async function cargarDashboard() {
       banner.style.backgroundImage = `linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%), url('${img}')`;
     }
     if (bannerNombre) bannerNombre.textContent = user.estadio || user.club || 'Estadio';
-
-    // Selector de campos (solo plan freemium/smart con múltiples campos disponibles)
-    inicializarSelectorCampos(user);
   }
 
   await Promise.all([
@@ -37,49 +33,6 @@ async function cargarDashboard() {
   ]);
 
   iniciarWebSocket();
-}
-
-// =============== SELECTOR DE CAMPOS DISPONIBLES (FREEMIUM) ===============
-function inicializarSelectorCampos(user) {
-  const selector = document.getElementById('campo-selector');
-  const titulo = document.getElementById('estadio-nombre');
-  if (!selector || !titulo) return;
-
-  // Solo aplicable para plan smart/freemium
-  const plan = (user.plan || 'smart').toLowerCase();
-  if (plan === 'elite') return;
-
-  // Lista de campos disponibles del plan smart
-  const camposDisponibles = [
-    { nombre: 'Las Gaunas',           club: 'CD Logroñés' },
-    { nombre: 'Los Cármenes',         club: 'Granada CF B' },
-    { nombre: 'Estadio de Anoeta',    club: 'Real Sociedad B' },
-    { nombre: 'Nuevo Vivero',         club: 'CF Badajoz' },
-    { nombre: 'El Plantío',           club: 'Burgos Promesas' }
-  ];
-
-  // Si solo hay 1 disponible, no mostrar selector
-  if (camposDisponibles.length <= 1) return;
-
-  // Llenar selector
-  selector.innerHTML = camposDisponibles.map(c =>
-    `<option value="${c.nombre}" ${c.nombre === user.estadio ? 'selected' : ''}>${c.nombre} — ${c.club}</option>`
-  ).join('');
-
-  // Mostrar selector y ocultar h2
-  titulo.style.display = 'none';
-  selector.style.display = '';
-}
-
-function cambiarCampo(nombreCampo) {
-  // En esta demo, simulamos el cambio actualizando el banner y avisando
-  const banner = document.getElementById('smart-stadium-banner');
-  const bannerNombre = document.getElementById('banner-estadio-nombre-smart');
-  const img = ESTADIO_IMAGENES[nombreCampo] || '/assets/images/estadios/generico.svg';
-  if (banner) banner.style.backgroundImage = `linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%), url('${img}')`;
-  if (bannerNombre) bannerNombre.textContent = nombreCampo;
-  // En producción aquí recargaríamos los datos del nuevo campo
-  console.log('Campo cambiado a:', nombreCampo);
 }
 
 async function cargarSensores() {
@@ -309,9 +262,7 @@ function irASeccion(id) {
   if (el) { event.preventDefault(); el.scrollIntoView({ behavior:'smooth' }); }
 }
 
-// =================== EXPORTAR PDF DEL HISTORIAL DE DATOS ===================
 async function exportarPDF() {
-  // Verificar que jsPDF está cargado
   if (typeof window.jspdf === 'undefined') {
     alert('Error: la librería jsPDF no se ha cargado. Recarga la página e inténtalo de nuevo.');
     return;
@@ -320,35 +271,30 @@ async function exportarPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-  // Datos del usuario y del campo
   const user = API.getUsuario() || {};
   const estadio = user.estadio || user.club || 'Estadio';
   const plan = (user.plan || 'smart').toUpperCase();
   const fechaHoy = new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'long', year:'numeric' });
   const horaHoy = new Date().toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
 
-  // ===== CABECERA =====
-  doc.setFillColor(31, 56, 100); // NAVY
+  doc.setFillColor(31, 56, 100);
   doc.rect(0, 0, 210, 30, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text('SensoSmart', 14, 14);
+  doc.text('SENSOSMART', 14, 14);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text('Informe de Historial de Datos', 14, 22);
-
   doc.setFontSize(9);
   doc.text(`Plan ${plan}`, 196, 14, { align: 'right' });
   doc.text(fechaHoy, 196, 20, { align: 'right' });
   doc.text(horaHoy, 196, 26, { align: 'right' });
 
-  // ===== TÍTULO ESTADIO =====
   doc.setTextColor(31, 56, 100);
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.text(estadio, 14, 42);
-
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'italic');
@@ -356,7 +302,6 @@ async function exportarPDF() {
 
   let yPos = 58;
 
-  // ===== KPIs ACTUALES =====
   const kpiCards = document.querySelectorAll('.kpi-card');
   if (kpiCards.length > 0) {
     doc.setTextColor(31, 56, 100);
@@ -364,7 +309,6 @@ async function exportarPDF() {
     doc.setFont('helvetica', 'bold');
     doc.text('Estado actual del campo', 14, yPos);
     yPos += 5;
-
     const kpiData = [];
     kpiCards.forEach(card => {
       const label = card.querySelector('.kpi-label')?.textContent || '';
@@ -372,7 +316,6 @@ async function exportarPDF() {
       const status = card.querySelector('.kpi-status')?.textContent || '';
       if (label) kpiData.push([label, value, status]);
     });
-
     doc.autoTable({
       startY: yPos,
       head: [['Parámetro', 'Valor', 'Estado']],
@@ -385,11 +328,9 @@ async function exportarPDF() {
     yPos = doc.lastAutoTable.finalY + 8;
   }
 
-  // ===== HISTORIAL DE DATOS (humedad, temperatura, alertas) =====
   const historicoCards = document.querySelectorAll('.historico-card');
   if (historicoCards.length > 0) {
     if (yPos > 230) { doc.addPage(); yPos = 20; }
-
     doc.setTextColor(31, 56, 100);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
@@ -398,8 +339,6 @@ async function exportarPDF() {
 
     historicoCards.forEach(card => {
       const titulo = card.querySelector('h4')?.textContent || '';
-
-      // Datos en barras (humedad, temperatura, alertas)
       const barRows = card.querySelectorAll('.bar-row');
       if (barRows.length > 0) {
         const filas = [];
@@ -408,15 +347,12 @@ async function exportarPDF() {
           const valor = row.querySelector('.bar-val')?.textContent || '';
           if (mes) filas.push([mes, valor]);
         });
-
         if (yPos > 250) { doc.addPage(); yPos = 20; }
-
         doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(31, 56, 100);
         doc.text(titulo, 14, yPos);
         yPos += 2;
-
         doc.autoTable({
           startY: yPos,
           head: [['Período', 'Valor']],
@@ -430,7 +366,6 @@ async function exportarPDF() {
         yPos = doc.lastAutoTable.finalY + 6;
       }
 
-      // Datos de partidos / informes (filas tipo ops-row con badges)
       const opsRows = card.querySelectorAll('.ops-row');
       if (opsRows.length > 0 && barRows.length === 0) {
         const filas = [];
@@ -439,15 +374,12 @@ async function exportarPDF() {
           const val = row.querySelector('.ops-val, .badge')?.textContent || '';
           if (key) filas.push([key, val]);
         });
-
         if (yPos > 250) { doc.addPage(); yPos = 20; }
-
         doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(31, 56, 100);
         doc.text(titulo, 14, yPos);
         yPos += 2;
-
         doc.autoTable({
           startY: yPos,
           head: [['Concepto', 'Valor']],
@@ -463,11 +395,9 @@ async function exportarPDF() {
     });
   }
 
-  // ===== ESTADO DEL SISTEMA Y GESTIÓN =====
   const gestionCards = document.querySelectorAll('.gestion-card');
   if (gestionCards.length > 0) {
     if (yPos > 230) { doc.addPage(); yPos = 20; }
-
     doc.setTextColor(31, 56, 100);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
@@ -477,23 +407,19 @@ async function exportarPDF() {
     gestionCards.forEach(card => {
       const titulo = card.querySelector('h4')?.textContent || '';
       const opsRows = card.querySelectorAll('.ops-row');
-
       const filas = [];
       opsRows.forEach(row => {
         const key = row.querySelector('.ops-key')?.textContent || '';
         const val = row.querySelector('.ops-val')?.textContent || '';
         if (key) filas.push([key, val]);
       });
-
       if (filas.length === 0) return;
       if (yPos > 250) { doc.addPage(); yPos = 20; }
-
       doc.setFontSize(10);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(31, 56, 100);
       doc.text(titulo, 14, yPos);
       yPos += 2;
-
       doc.autoTable({
         startY: yPos,
         head: [['Concepto', 'Valor']],
@@ -508,7 +434,6 @@ async function exportarPDF() {
     });
   }
 
-  // ===== PIE DE PÁGINA EN TODAS LAS PÁGINAS =====
   const totalPages = doc.internal.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
@@ -524,7 +449,6 @@ async function exportarPDF() {
     doc.text(`Firma digital: STAI-${Date.now().toString(36).toUpperCase()}`, 14, 294);
   }
 
-  // ===== GUARDAR =====
   const nombreArchivo = `Historial_${estadio.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`;
   doc.save(nombreArchivo);
 }
@@ -544,5 +468,4 @@ function iniciarWebSocket() {
   };
 }
 
-// Iniciar al cargar
 window.addEventListener('DOMContentLoaded', cargarDashboard);

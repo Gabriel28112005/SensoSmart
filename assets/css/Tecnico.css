@@ -43,3 +43,10 @@ tr:nth-child(even){background:var(--off)}
 .sup-status{font-size:10px;margin-top:4px;color:var(--g2)}
 .et-section{background:var(--white);border:1px solid var(--lgray);border-radius:10px;padding:14px;margin-bottom:14px}
 .et-card{margin-top:10px;background:var(--off);border-radius:8px;padding:14px;font-size:12px;line-height:1.8}
+
+
+/* Oculta el botón nativo de Microsoft Edge para mostrar/ocultar contraseña,
+   evitando que aparezca duplicado junto al botón propio de la aplicación */
+input[type="password"]::-ms-reveal {
+    display: none;
+}

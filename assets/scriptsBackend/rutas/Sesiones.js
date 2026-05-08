@@ -1,9 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const { verificarToken } = require('../autentificacionRoles/Middleware');
+const { verificarToken, soloAdmin } = require('../autentificacionRoles/Middleware');
 const pool = require('../Db');
 
-// GET /api/sesiones — devuelve las sesiones activas desde la base de datos
+// GET /api/sesiones — devuelve las sesiones activas
 router.get('/', verificarToken, async (req, res) => {
   try {
     const [filas] = await pool.execute(
@@ -14,17 +14,18 @@ router.get('/', verificarToken, async (req, res) => {
        LIMIT 10`
     );
 
-    // Formatear la hora de inicio para mostrarlo de forma legible
+    const ahora = new Date();
     const sesiones = filas.map((s, i) => {
       const inicio = new Date(s.inicio);
+      const esHoy = inicio.toDateString() === ahora.toDateString();
       const h = inicio.getHours().toString().padStart(2, '0');
       const m = inicio.getMinutes().toString().padStart(2, '0');
       return {
-        id:              s.id,
-        dispositivo:     s.tipoDispositivo || 'Desconocido',
-        ip:              s.direccionIP     || 'Desconocida',
-        inicio:          `Hoy ${h}:${m}`,
-        actual:          i === 0
+        id:          s.id,
+        dispositivo: s.tipoDispositivo || 'Desconocido',
+        ip:          s.direccionIP     || 'Desconocida',
+        inicio:      `${esHoy ? 'Hoy' : 'Ayer'} ${h}:${m}`,
+        actual:      i === 0
       };
     });
 
@@ -33,6 +34,46 @@ router.get('/', verificarToken, async (req, res) => {
   } catch (error) {
     console.error('Error al obtener sesiones:', error.message);
     res.status(500).json({ error: 'Error al obtener sesiones' });
+  }
+});
+
+// GET /api/sesiones/log — log de accesos para el panel admin
+router.get('/log', verificarToken, soloAdmin, async (req, res) => {
+  try {
+    const [filas] = await pool.execute(
+      `SELECT nombreUsuario, tipoDispositivo, direccionIP, inicio
+       FROM sesiones
+       ORDER BY inicio DESC
+       LIMIT 20`
+    );
+
+    const ahora = new Date();
+    const log = filas.map(s => {
+      const inicio = new Date(s.inicio);
+      const esHoy = inicio.toDateString() === ahora.toDateString();
+      const h = inicio.getHours().toString().padStart(2, '0');
+      const m = inicio.getMinutes().toString().padStart(2, '0');
+      const cuando = `${esHoy ? 'Hoy' : 'Ayer'} ${h}:${m}`;
+
+      // Simplificar el tipoDispositivo (user agent) a algo legible
+      const ua = s.tipoDispositivo || '';
+      let dispositivo = 'Dispositivo desconocido';
+      if (ua.includes('Chrome') && ua.includes('Windows'))   dispositivo = 'Chrome / Windows';
+      else if (ua.includes('Chrome') && ua.includes('Mac'))  dispositivo = 'Chrome / Mac';
+      else if (ua.includes('Chrome') && ua.includes('Linux')) dispositivo = 'Chrome / Linux';
+      else if (ua.includes('Safari') && ua.includes('iPad')) dispositivo = 'Safari / iPad';
+      else if (ua.includes('Safari') && ua.includes('iPhone')) dispositivo = 'Safari / iPhone';
+      else if (ua.includes('Firefox'))                       dispositivo = 'Firefox';
+      else if (ua.includes('Desconocido'))                   dispositivo = 'Desconocido';
+
+      return `${cuando} — ${s.nombreUsuario} inició sesión desde ${dispositivo} (${s.direccionIP || 'IP desconocida'})`;
+    });
+
+    res.json(log);
+
+  } catch (error) {
+    console.error('Error al obtener log de sesiones:', error.message);
+    res.status(500).json({ error: 'Error al obtener log' });
   }
 });
 

@@ -927,3 +927,10 @@
 
 .kpi-ok { color: #2D6A4F; }
 .kpi-warn { color: #C65911; }
+
+
+/* Oculta el botón nativo de Microsoft Edge para mostrar/ocultar contraseña,
+   evitando que aparezca duplicado junto al botón propio de la aplicación */
+input[type="password"]::-ms-reveal {
+    display: none;
+}
