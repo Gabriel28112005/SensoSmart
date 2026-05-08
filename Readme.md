@@ -7,7 +7,7 @@ Plataforma inteligente de sensorización y gestión del césped deportivo para c
 ## Instalación
 
 ```bash
-cd SmartTurfAI_App
+cd SensoSmart
 npm install
 node Server.js
 ```
