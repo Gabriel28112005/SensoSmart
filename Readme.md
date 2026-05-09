@@ -1,4 +1,4 @@
-# SensoSmart — Grupo 15 · UAX · SENER 2026
+# SensoSmart - Grupo 15 · UAX · SENER 2026
 
 Plataforma inteligente de sensorización y gestión del césped deportivo para campos de fútbol profesional.
 
