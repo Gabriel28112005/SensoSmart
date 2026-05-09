@@ -6,8 +6,11 @@
 //   4. Digital Twin 3D del estadio
 
 const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
+const router  = express.Router();
+const jwt     = require('jsonwebtoken');
+
+// Módulo compartido — lógica de próximo partido (también usada por IA.js)
+const { obtenerProximoPartido } = require('../ProximoPartido');
 
 // ============================================================
 // MIDDLEWARE DE CONTROL DE PLAN
@@ -44,80 +47,6 @@ function soloElite(req, res, next) {
     next();
   } catch {
     return res.status(401).json({ error: 'Token inválido' });
-  }
-}
-
-// ============================================================
-// FUNCIÓN AUXILIAR — obtener próximo partido desde football-data.org
-// API gratuita con acceso a la temporada actual (2025/26)
-// Usada tanto en /lesiones como en /proximo-partido
-// ============================================================
-async function obtenerProximoPartido(club) {
-  // IDs de football-data.org — LaLiga EA Sports 2025/26
-  const EQUIPOS = {
-    'Real Madrid CF':        86,
-    'FC Barcelona':          81,
-    'Atlético de Madrid':    78,
-    'Athletic Bilbao':       77,
-    'Villarreal CF':         94,
-    'Real Betis':            90,
-    'Celta de Vigo':         558,
-    'Getafe CF':             82,
-    'Real Sociedad':         92,
-    'Osasuna':               79,
-    'Rayo Vallecano':        876,
-    'Valencia CF':           95,
-    'Espanyol':              80,
-    'Girona FC':             298,
-    'Sevilla FC':            559,
-    'Deportivo Alavés':      263,
-    'RCD Mallorca':          89,
-    'Levante UD':            97,
-    'Elche CF':              745,
-    'Real Oviedo':           285,
-  };
-
-  const equipoId = EQUIPOS[club];
-  if (!equipoId) return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
-
-  try {
-    const response = await fetch(
-      `https://api.football-data.org/v4/teams/${equipoId}/matches?status=SCHEDULED&limit=1`,
-      {
-        headers: {
-          'X-Auth-Token': process.env.FOOTBALLDATA_KEY,
-          'User-Agent':   'SensoSmart/1.0'
-        }
-      }
-    );
-    const data = await response.json();
-    console.log('=== football-data.org respuesta ===');
-    console.log('Status HTTP:', response.status);
-    console.log('Data:', JSON.stringify(data, null, 2));
-    const match = data.matches?.[0];
-
-    if (!match) return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
-
-    const fecha = new Date(match.utcDate);
-    const ahora = new Date();
-    const fechaSoloFecha = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
-const ahoraSoloFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
-const diffDias = Math.round((fechaSoloFecha - ahoraSoloFecha) / (1000 * 60 * 60 * 24));
-    const jornada = match.matchday ? `J${match.matchday}` : '—';
-
-    const esLocal = match.homeTeam.id === equipoId;
-    const rival = esLocal ? match.awayTeam.name : match.homeTeam.name;
-
-    return {
-      jornada,
-      fecha:         fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
-      diasRestantes: diffDias > 0 ? diffDias : 0,
-      rival,
-      esLocal
-    };
-  } catch (e) {
-    console.error('Error obteniendo próximo partido:', e.message);
-    return { jornada: '—', fecha: '—', diasRestantes: '—', rival: '—' };
   }
 }
 
@@ -170,8 +99,8 @@ router.get('/mapa-calor', soloElite, (req, res) => {
     rejilla,
     estadisticas: {
       ndviMedio: +ndviMedio.toFixed(3),
-      ndviMin: +ndviMin.toFixed(3),
-      ndviMax: +ndviMax.toFixed(3),
+      ndviMin:   +ndviMin.toFixed(3),
+      ndviMax:   +ndviMax.toFixed(3),
       uniformidad,
       zonasOptimas:  rejilla.flat().filter(c => c.estado === 'optimo').length,
       zonasAtencion: rejilla.flat().filter(c => c.estado === 'atencion').length,
@@ -237,7 +166,7 @@ router.post('/asistente', soloElite, (req, res) => {
 // Consulta el próximo partido en tiempo real desde football-data.org
 // ============================================================
 router.get('/lesiones', soloElite, async (req, res) => {
-  // Obtener próximo partido real desde football-data.org
+  // Obtener próximo partido real desde football-data.org (módulo compartido)
   const proximoPartido = await obtenerProximoPartido(req.usuario.club);
 
   res.json({
@@ -264,8 +193,8 @@ router.get('/lesiones', soloElite, async (req, res) => {
       'Compartir este informe con el cuerpo técnico para ajustar entrenamientos a zonas más seguras'
     ],
     valorPlantillaProtegido: '€ 62.000.000 (jugadores expuestos a zonas de riesgo medio/alto)',
-    modelo:     'XGBoost + correlación histórica de lesiones',
-    confianza:  0.83
+    modelo:    'XGBoost + correlación histórica de lesiones',
+    confianza: 0.83
   });
 });
 
