@@ -1,6 +1,6 @@
 -- ============================================================
--- SensoSmart — Base de Datos (versión definitiva)
--- UAX · SENER 2026 — Grupo 15
+-- SensoSmart - Base de Datos (versión definitiva)
+-- UAX · SENER 2026 - Grupo 15
 -- Motor: MySQL 8.0+
 -- ============================================================
 -- CAMBIOS RESPECTO A LA VERSIÓN ANTERIOR:
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- ============================================================
--- CONTRATOS — gestión de facturación, SLA y suspensión por impago
+-- CONTRATOS - gestión de facturación, SLA y suspensión por impago
 -- ============================================================
 CREATE TABLE IF NOT EXISTS contratos (
   id                 INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS contratos (
 );
 
 -- ============================================================
--- SENSORES — con modelo, proveedor, alimentación y calibración
+-- SENSORES - con modelo, proveedor, alimentación y calibración
 -- ============================================================
 CREATE TABLE IF NOT EXISTS sensores (
   id                  VARCHAR(10) PRIMARY KEY,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS sensores (
 );
 
 -- ============================================================
--- LECTURAS DE SENSORES (con pH añadido — los nuevos sensores lo miden)
+-- LECTURAS DE SENSORES (con pH añadido - los nuevos sensores lo miden)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS lecturas (
   id          BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS alertas (
 );
 
 -- ============================================================
--- PREDICCIONES DE IA — recomendaciones generadas automáticamente
+-- PREDICCIONES DE IA - recomendaciones generadas automáticamente
 -- ============================================================
 CREATE TABLE IF NOT EXISTS predicciones (
   id               BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS predicciones (
 );
 
 -- ============================================================
--- MAPA DE CALOR (solo Elite) — uniformidad cromática en tiempo real
+-- MAPA DE CALOR (solo Elite) - uniformidad cromática en tiempo real
 -- ============================================================
 CREATE TABLE IF NOT EXISTS mapa_calor (
   id            BIGINT AUTO_INCREMENT PRIMARY KEY,
