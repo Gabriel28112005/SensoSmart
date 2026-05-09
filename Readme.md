@@ -54,7 +54,7 @@ Solicítalas al responsable del proyecto si las necesitas.
 ## Estructura del proyecto
 
 ```
-SmartTurfAI_App/
+SensoSmart/
 ├── Server.js                   # Servidor Express + WebSocket
 ├── Index.html                  # Pantalla de login
 ├── package.json
@@ -80,7 +80,7 @@ SmartTurfAI_App/
 
 ## Notas
 
-- Los datos visualizados son simulados (mock) para fines de demostración académica.
+- Los datos visualizados son simulados para fines de demostración académica.
 - El asistente conversacional usa respuestas keyword-based simulando un LLM local (en producción usaría Llama 3.2 3B sobre Jetson Orin NX).
 - El Visor 3D renderiza un campo de fútbol estilizado con sensores en posiciones reales y halos animados de calor; la vista cromática pinta el campo con la rejilla NDVI 12×6.
 - Las imágenes de los estadios son ilustraciones SVG vectoriales propias para evitar problemas de licencias.
